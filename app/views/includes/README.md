@@ -1,0 +1,1 @@
+Add view template files in this folder
