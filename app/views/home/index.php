@@ -14,6 +14,6 @@
         }
     </style>
     <body>
-        <a href="https://independentphp.com/" target="_blank"><img src="/assets/img/indyPHP-logo.png"></a>
+        <a href="https://indy-php.com/" target="_blank"><img src="/assets/img/indyPHP-logo.png"></a>
     </body>
 </html> 
