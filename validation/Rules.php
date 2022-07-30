@@ -16,7 +16,7 @@ class Rules {
     /**
      * You can add the validation rule methods right here
      * 
-     * https://independentphp.com/documentation/validation
+     * https://indy-php.com/docs/validation
      * 
      * Create instance of Validate 
      * Chain input method on instance variable and add html input name as argument
