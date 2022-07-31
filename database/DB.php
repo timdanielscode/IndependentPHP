@@ -3,7 +3,7 @@
  * Database
  * 
  * @author Tim Daniëls
- * @version 0.1.1
+ * @version 0.1.2
  */
 namespace database;
 
@@ -334,18 +334,6 @@ class DB {
     public function raw($sql) {
 
         $this->query = "$sql";
-        return $this;
-    }
-
-    /** 
-     * Fetching rows on last inserted id
-     * Adding SELECT LAST_INSERT_ID() to query
-     * 
-     * @return object DB
-     */ 
-    public function getLastId() {
-
-        $this->query = "SELECT LAST_INSERT_ID()";
         return $this;
     }
 
