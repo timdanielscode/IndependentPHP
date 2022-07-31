@@ -3,7 +3,7 @@
  * Database
  * 
  * @author Tim Daniëls
- * @version 0.1.2
+ * @version 0.1.3
  */
 namespace database;
 
@@ -293,6 +293,18 @@ class DB {
     public function order($column) {
 
         $this->query .= " ORDER BY $column";
+        return $this;
+    }
+
+    /** 
+     * Fetching rows descending
+     * Adding DESC to query
+     * 
+     * @return object DB
+     */     
+    public function desc() {
+
+        $this->query .= " DESC";
         return $this;
     }
 
