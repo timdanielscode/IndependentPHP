@@ -3,7 +3,6 @@
  * autload
  * 
  * @author Tim Daniëls
- * @version 0.1.0
  */
 
 spl_autoload_register(function($class) {

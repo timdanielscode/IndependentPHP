@@ -3,7 +3,6 @@
  * Database
  * 
  * @author Tim Daniëls
- * @version 0.1.3
  */
 namespace database;
 

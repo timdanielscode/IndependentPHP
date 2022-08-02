@@ -3,7 +3,6 @@
  * Run application
  * 
  * @author Tim Daniëls
- * @version 1.0
  */
 
 require_once '../core/Autoload.php';
