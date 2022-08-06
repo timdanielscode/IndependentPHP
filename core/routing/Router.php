@@ -142,9 +142,22 @@ class Router extends RouteBinder {
     /**
      * @param string $path route
      * @param string $view name
+     * @param array $routeKeys optional
      * @return object Controller
      */ 
-    public function handleView($path, $view) {
+    public function handleView($path, $view, $routeKeys = null) {
+
+        if($routeKeys) {
+           
+            $checkKeys = implode('|', $routeKeys);
+            if(preg_match("($checkKeys)", $path) === 1) { 
+                
+                $this->setRouteKeyKeys($path, $routeKeys);
+                $this->_routeBinder = new RouteBinder();
+                $this->_routeBinder->setPath($this->_partsPath, $this->_pathRouteKeyKeys, $this->request->getUri()); 
+                $path = $this->_routeBinder->getPath();      
+            } 
+        }
      
         if(strtok($this->request->getUri(), '?') == $path || strtok($this->request->getUri(), '?') . "/" == $path) {
             

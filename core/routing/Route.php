@@ -85,7 +85,7 @@ class Route extends Router {
         $route = new Router(self::$_request, self::$_response);
         if(self::$_request->getMethod() === 'GET') {
 
-           return $route->handleView($path, $view);
+           return $route->handleView($path, $view, self::$_routeKeys);
         } else {
             return $route;
         }
