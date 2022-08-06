@@ -336,6 +336,18 @@ class DB {
     }
 
     /** 
+     * Fetching last id from table 
+     * 
+     * @param string $table name
+     * @return object DB
+     */ 
+    public function getLastId($table) {
+
+        $this->query = "SELECT id FROM $table ORDER BY id DESC LIMIT 1";
+        return $this;
+    }
+
+    /** 
      * Fetching/executing raw sql
      * Setting query to giving argument
      * 
