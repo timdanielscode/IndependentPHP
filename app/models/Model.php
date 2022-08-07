@@ -46,4 +46,25 @@ class Model extends DB {
       $query = self::$db->select('*')->from(self::$modelTable)->fetch();
       return $query;
    }
+
+   /**
+    * Fetching row on id
+    *
+    * @param int $id column value
+    * @return string row table
+    */
+    public static function get($id) {
+
+      if($id !== null) {
+
+         $model = get_called_class();
+
+         if (class_exists($model)) {
+            $instance = new $model;
+         }
+
+         $query = self::$db->select('*')->from(self::$modelTable)->where('id', '=', $id)->first();
+         return $query;
+      }
+   }
 }
