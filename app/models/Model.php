@@ -40,7 +40,7 @@ class Model extends DB {
 
       $model = self::createInstance();
       $query = self::$db->select('*')->from(self::$modelTable)->fetch();
-      $modelQuery = array_merge($model, $query);
+      $modelQuery = array_filter(array_merge($model, $query));
 
       return $modelQuery;
    }
@@ -57,7 +57,7 @@ class Model extends DB {
 
          $model = self::createInstance();
          $query = self::$db->select('*')->from(self::$modelTable)->where('id', '=', $id)->first();
-         $modelQuery = array_merge($model, $query);
+         $modelQuery = array_filter(array_merge($model, $query));
          
          return $modelQuery;
       }
@@ -77,7 +77,7 @@ class Model extends DB {
          
          $model = self::createInstance();
          $query = self::$db->select('*')->from(self::$modelTable)->where($column, $operator, $value)->first();
-         $modelQuery = array_merge($model, $query);
+         $modelQuery = array_filter(array_merge($model, $query));
          
          return $modelQuery;
       }
@@ -96,7 +96,7 @@ class Model extends DB {
          
          $instance = new $model;
          $arrayModel = (array) $instance;
-         
+
          return $arrayModel;
       }
    }
