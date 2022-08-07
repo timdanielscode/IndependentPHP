@@ -37,11 +37,7 @@ class Model extends DB {
     */
    public static function getAll() {
 
-      $model = get_called_class();
-
-      if (class_exists($model)) {
-         $instance = new $model;
-      }
+      self::createInstance();
 
       $query = self::$db->select('*')->from(self::$modelTable)->fetch();
       return $query;
@@ -57,14 +53,26 @@ class Model extends DB {
 
       if($id !== null) {
 
-         $model = get_called_class();
-
-         if (class_exists($model)) {
-            $instance = new $model;
-         }
+         self::createInstance();
 
          $query = self::$db->select('*')->from(self::$modelTable)->where('id', '=', $id)->first();
          return $query;
+      }
+   }
+
+   /**
+    * Create model instance
+    *
+    * @return object $instance model
+    */
+   public static function createInstance() {
+
+      $model = get_called_class();
+
+      if (class_exists($model)) {
+         
+         $instance = new $model;
+         return $instance;
       }
    }
 }
