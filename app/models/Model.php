@@ -47,7 +47,7 @@ class Model extends DB {
     * Fetching row on id
     *
     * @param int $id column value
-    * @return string row table
+    * @return array row table
     */
     public static function get($id) {
 
@@ -56,6 +56,25 @@ class Model extends DB {
          self::createInstance();
 
          $query = self::$db->select('*')->from(self::$modelTable)->where('id', '=', $id)->first();
+         return $query;
+      }
+   }
+
+   /**
+    * Fetching row on condition
+    *
+    * @param string $column name
+    * @param string $operator value
+    * @param string $value column
+    * @return array row table
+    */
+    public static function condition($column, $operator, $value) {
+     
+      if($column !== null && $value !== null) {
+         
+         self::createInstance();
+
+         $query = self::$db->select('*')->from(self::$modelTable)->where($column, $operator, $value)->first();
          return $query;
       }
    }
