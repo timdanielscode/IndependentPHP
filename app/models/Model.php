@@ -11,8 +11,7 @@ use database\DB;
 
 class Model extends DB {
 
-   public static $db;
-   public static $modelTable;
+   private static $db, $modelTable, $model;
 
    /**
     * Setting model table name if exists
@@ -26,7 +25,25 @@ class Model extends DB {
       $getTable = self::$db->raw("SELECT 1 FROM $table LIMIT 1")->first();
 
       if($getTable[1] === '1') {
+
          self::$modelTable = $table; 
       }
+   }
+
+   /**
+    * Fetching all rows from table
+    * 
+    * @return array rows table
+    */
+   public static function getAll() {
+
+      $model = get_called_class();
+
+      if (class_exists($model)) {
+         $instance = new $model;
+      }
+
+      $query = self::$db->select('*')->from(self::$modelTable)->fetch();
+      return $query;
    }
 }
