@@ -11,7 +11,8 @@ use database\DB;
 
 class Model extends DB {
 
-   private static $db, $modelTable, $model;
+   private static $db, $modelTable;
+   public $model;
 
    /**
     * Setting model table name if exists
@@ -33,30 +34,32 @@ class Model extends DB {
    /**
     * Fetching all rows from table
     * 
-    * @return array rows table
+    * @return array model and rows table
     */
    public static function getAll() {
 
-      self::createInstance();
-
+      $model = self::createInstance();
       $query = self::$db->select('*')->from(self::$modelTable)->fetch();
-      return $query;
+      $modelQuery = array_merge($model, $query);
+
+      return $modelQuery;
    }
 
    /**
     * Fetching row on id
     *
     * @param int $id column value
-    * @return array row table
+    * @return array model and row table
     */
     public static function get($id) {
 
       if($id !== null) {
 
-         self::createInstance();
-
+         $model = self::createInstance();
          $query = self::$db->select('*')->from(self::$modelTable)->where('id', '=', $id)->first();
-         return $query;
+         $modelQuery = array_merge($model, $query);
+         
+         return $modelQuery;
       }
    }
 
@@ -66,16 +69,17 @@ class Model extends DB {
     * @param string $column name
     * @param string $operator value
     * @param string $value column
-    * @return array row table
+    * @return array model and row table
     */
     public static function condition($column, $operator, $value) {
      
       if($column !== null && $value !== null) {
          
-         self::createInstance();
-
+         $model = self::createInstance();
          $query = self::$db->select('*')->from(self::$modelTable)->where($column, $operator, $value)->first();
-         return $query;
+         $modelQuery = array_merge($model, $query);
+         
+         return $modelQuery;
       }
    }
 
@@ -91,7 +95,9 @@ class Model extends DB {
       if (class_exists($model)) {
          
          $instance = new $model;
-         return $instance;
+         $arrayModel = (array) $instance;
+         
+         return $arrayModel;
       }
    }
 }
