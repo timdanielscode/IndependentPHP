@@ -9,7 +9,7 @@ namespace app\models;
 
 use database\DB;
 
-class Model extends DB {
+class Model {
 
    private static $db, $modelTable;
    public $model;
