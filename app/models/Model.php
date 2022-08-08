@@ -83,6 +83,21 @@ class Model {
    }
 
    /**
+    * Inserting rows
+    *
+    * @param array column names and values
+    * @return void
+    */
+    public static function insert($data) {
+     
+      if(!empty($data) && $data !== null) {
+         
+         $model = self::createInstance();
+         $query = DB::try()->insert(self::$modelTable, $data);
+      }
+   }
+
+   /**
     * Create model instance
     *
     * @return object $instance model
