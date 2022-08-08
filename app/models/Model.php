@@ -70,7 +70,7 @@ class Model {
     * @param string $value column
     * @return array model and row table
     */
-    public static function condition($column, $operator, $value) {
+    public static function where($column, $operator, $value) {
      
       if($column !== null && $value !== null) {
          
