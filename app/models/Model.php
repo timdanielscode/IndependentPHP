@@ -35,7 +35,7 @@ class Model {
     * 
     * @return array model and rows table
     */
-   public static function getAll() {
+   public static function all() {
 
       $model = self::createInstance();
       $query = DB::try()->select('*')->from(self::$modelTable)->fetch();
