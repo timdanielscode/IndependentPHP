@@ -98,6 +98,25 @@ class Model {
    }
 
    /**
+    * Updating rows
+    *
+    * @param array $where column name, column value
+    * @param array $data column names, column values
+    * @return void
+    */
+    public static function update($where, $data) {
+     
+      if(!empty($where) && $where !== null && !empty($data) && $data !== null ) {
+         
+         foreach($where as $key => $value) {
+
+            $model = self::createInstance();
+            $query = DB::try()->update(self::$modelTable)->set($data)->where($key, '=', $value)->run();
+         }
+      }
+   }
+
+   /**
     * Create model instance
     *
     * @return object $instance model
