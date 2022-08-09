@@ -117,6 +117,22 @@ class Model {
    }
 
    /**
+    * Deleting rows
+    *
+    * @param string $column name
+    * @param string $value column
+    * @return void
+    */
+    public static function delete($column, $value) {
+     
+      if(!empty($column) && $column !== null && !empty($value) && $value !== null) {
+
+         $model = self::createInstance();
+         $query = DB::try()->delete(self::$modelTable)->where($column, '=', $value)->run();
+      }
+   }
+
+   /**
     * Create model instance
     *
     * @return object $instance model
