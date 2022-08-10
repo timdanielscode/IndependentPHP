@@ -12,7 +12,6 @@ use database\DB;
 class Model {
 
    private static $modelTable;
-   public $model;
 
    /**
     * Setting model table name if exists
@@ -33,32 +32,26 @@ class Model {
    /**
     * Fetching all rows from table
     * 
-    * @return array model and rows table
+    * @return object DB
     */
    public static function all() {
 
-      $model = self::createInstance();
-      $query = DB::try()->select('*')->from(self::$modelTable)->fetch();
-      $modelQuery = array_filter(array_merge($model, $query));
-
-      return $modelQuery;
+      self::createInstance();
+      return DB::try()->select('*')->from(self::$modelTable)->fetch();
    }
 
    /**
     * Fetching row on id
     *
     * @param int $id column value
-    * @return array model and row table
+    * @return object DB
     */
     public static function get($id) {
 
       if($id !== null) {
 
-         $model = self::createInstance();
-         $query = DB::try()->select('*')->from(self::$modelTable)->where('id', '=', $id)->first();
-         $modelQuery = array_filter(array_merge($model, $query));
-         
-         return $modelQuery;
+         self::createInstance();
+         return DB::try()->select('*')->from(self::$modelTable)->where('id', '=', $id)->first();
       }
    }
 
@@ -68,17 +61,14 @@ class Model {
     * @param string $column name
     * @param string $operator value
     * @param string $value column
-    * @return array model and row table
+    * @return object DB
     */
     public static function where($column, $operator, $value) {
      
       if($column !== null && $value !== null) {
          
-         $model = self::createInstance();
-         $query = DB::try()->select('*')->from(self::$modelTable)->where($column, $operator, $value)->first();
-         $modelQuery = array_filter(array_merge($model, $query));
-         
-         return $modelQuery;
+         self::createInstance();
+         return DB::try()->select('*')->from(self::$modelTable)->where($column, $operator, $value)->first();
       }
    }
 
@@ -86,14 +76,14 @@ class Model {
     * Inserting rows
     *
     * @param array column names and values
-    * @return void
+    * @return object DB
     */
     public static function insert($data) {
      
       if(!empty($data) && $data !== null) {
          
-         $model = self::createInstance();
-         $query = DB::try()->insert(self::$modelTable, $data);
+         self::createInstance();
+         return DB::try()->insert(self::$modelTable, $data);
       }
    }
 
@@ -102,7 +92,7 @@ class Model {
     *
     * @param array $where column name, column value
     * @param array $data column names, column values
-    * @return void
+    * @return object DB
     */
     public static function update($where, $data) {
      
@@ -110,8 +100,8 @@ class Model {
          
          foreach($where as $key => $value) {
 
-            $model = self::createInstance();
-            $query = DB::try()->update(self::$modelTable)->set($data)->where($key, '=', $value)->run();
+            self::createInstance();
+            return DB::try()->update(self::$modelTable)->set($data)->where($key, '=', $value)->run();
          }
       }
    }
@@ -121,32 +111,28 @@ class Model {
     *
     * @param string $column name
     * @param string $value column
-    * @return void
+    * @return object DB
     */
     public static function delete($column, $value) {
      
       if(!empty($column) && $column !== null && !empty($value) && $value !== null) {
 
-         $model = self::createInstance();
-         $query = DB::try()->delete(self::$modelTable)->where($column, '=', $value)->run();
+         self::createInstance();
+         return DB::try()->delete(self::$modelTable)->where($column, '=', $value)->run();
       }
    }
 
    /**
     * Create model instance
     *
-    * @return object $instance model
+    * @return object model
     */
    public static function createInstance() {
 
       $model = get_called_class();
-
       if (class_exists($model)) {
          
-         $instance = new $model;
-         $arrayModel = (array) $instance;
-
-         return $arrayModel;
+         return new $model;
       }
    }
 }
