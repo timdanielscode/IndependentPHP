@@ -8,6 +8,8 @@ namespace core\http;
 
 class Request {
 
+    private $_data = [], $_postData = [], $_getData = [];
+
     /** 
      * Getting REQUEST_METHOD
      * 
@@ -31,45 +33,30 @@ class Request {
     /** 
      * Getting POST & GET superglobals
      * 
-     * @param array $param optional POST|GET variables
-     * @return array POST|GET variables
+     * @return array POST/GET variables
      */       
-    public function get($param = null) {
+    public function get() {
 
         $data = [];
 
         if($this->getMethod() === 'POST') {
-      
+
             foreach($_POST as $key => $value) {
 
-                $value = htmlspecialchars($value);
-                $data[$key] = $value;
-
-                if($param) {
-                    if($key == $param) {
-
-                        $param = $value;
-                        return $param;
-                    } 
-                }
+                $key = htmlspecialchars($key);
+                $this->_postData[$key] = $value;
             }
         }
+        if(!empty($_GET) && $_GET !== null) {
 
-        if($this->getMethod() === 'GET') {
             foreach($_GET as $key => $value) {
 
                 $key = htmlspecialchars($key);
-                $data[$key] = $value;
-
-                if($param) {
-                    if($key == $param) {
-
-                        $param = $value;
-                        return $param;
-                    } 
-                }
+                $this->_getData[$key] = $value;
             }
         }
-        return $data;
+
+        $this->_data = array_merge($this->_postData, $this->_getData);
+        return array_filter($this->_data);
     }
 }
