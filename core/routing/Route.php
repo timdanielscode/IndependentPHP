@@ -92,6 +92,27 @@ class Route extends Router {
     }
 
     /**
+     * Some kind of middleware
+     * 
+     * @param $middleware string type
+     * @param $func object closure
+     * @return object Route Request Response
+    */
+    public static function middleware($middleware, $func) {
+
+        if(!empty($middleware) && $middleware !== null) {
+
+            if($middleware === 'login') {
+
+                if(Session::exists("logged_in") === true) {
+                    print_r($func);
+                    return $func();
+                }
+            }
+        }
+    }
+
+    /**
      * Handling 404 status code
      * 
      * @param mixed int|string $code
