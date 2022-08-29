@@ -7,6 +7,7 @@
 namespace core\routing;
 
 use app\controllers\http\ResponseController;
+use core\Session;
 
 class Router extends RouteBinder {
 
@@ -191,5 +192,19 @@ class Router extends RouteBinder {
 
         $namespace = 'app\controllers\\' . $class;       
         return $namespace;
+    }    
+
+    /**
+     * Some kind of login middleware
+     * 
+     * @param $func object closure
+     * @return object Route Request Response
+    */    
+    public function login($func) {
+
+        if(Session::exists("logged_in") === true) {
+
+            return $func();
+        }
     }    
 }

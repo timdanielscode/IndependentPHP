@@ -92,24 +92,14 @@ class Route extends Router {
     }
 
     /**
-     * Some kind of middleware
+     * Creating Router instance for setting up middlewares
      * 
-     * @param $middleware string type
-     * @param $func object closure
      * @return object Route Request Response
     */
-    public static function middleware($middleware, $func) {
+    public static function middleware() {
 
-        if(!empty($middleware) && $middleware !== null) {
-
-            if($middleware === 'login') {
-
-                if(Session::exists("logged_in") === true) {
-                    print_r($func);
-                    return $func();
-                }
-            }
-        }
+        $route = new Router(self::$_request, self::$_response);
+        return $route;
     }
 
     /**
