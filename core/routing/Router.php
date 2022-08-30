@@ -207,4 +207,21 @@ class Router extends RouteBinder {
             return $func();
         }
     }    
+
+    /**
+     * Some kind of auth middleware
+     * 
+     * @param $func object closure
+     * @return object Route Request Response
+    */    
+    public function auth($type, $func) {
+
+        if(!empty($type) && $type !== null) {
+
+            if(Session::exists("logged_in") === true && Session::get('user_role') === $type) {
+   
+                return $func();
+            } 
+        }
+    } 
 }
