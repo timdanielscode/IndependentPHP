@@ -197,12 +197,16 @@ class Router extends RouteBinder {
     /**
      * Some kind of login middleware
      * 
+     * @param $bool optional
      * @param $func object closure
      * @return object Route Request Response
     */    
-    public function login($func) {
+    public function login($func, $bool = true) {
+    
+        if($bool === false && Session::exists("logged_in") === false) {
 
-        if(Session::exists("logged_in") === true) {
+            return $func();
+        } else if($bool === true && Session::exists("logged_in") === true) {
 
             return $func();
         }
