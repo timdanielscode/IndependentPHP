@@ -8,22 +8,29 @@ namespace core\routing;
 
 use app\controllers\http\ResponseController;
 use core\Session;
+use core\Middleware;
 
 class Router extends RouteBinder {
 
     private $_uri, $_path, $request, $request_vals, $_pathRouteKeyKeys, $_error;
     private $_partsPath = [];
     private $_routeBinder;
+    private $_middleware;
 
     /**
      * Declaring Request & Response
      * 
      * @return void
      */
-    public function __construct($request, $response) {
+    public function __construct($request, $response, $middleware = null) {
     
         $this->request = $request;
         $this->response = $response;
+
+        if($middleware !== null) {
+
+            $this->_middleware = $middleware;
+        }
     }
 
     /**
@@ -227,5 +234,18 @@ class Router extends RouteBinder {
                 return $func();
             } 
         }
-    } 
+    }  
+
+    /**
+     * Creating instance of Middleware
+     * 
+     * @param $func object closure
+    */       
+    public function run($func) {
+
+        if(!empty($this->_middleware) && $this->_middleware !== null) {
+
+            $middleware = new Middleware($this->_middleware, $func);
+        }
+    }
 }

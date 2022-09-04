@@ -12,7 +12,8 @@ use core\http\Response;
 
 class Route extends Router {
 
-    private static $_response, $_request, $_routeKeys;
+    private static $_response, $_request, $_routeKeys, $_middleware;
+
 
     /**
      * Declaring Request & Response
@@ -96,10 +97,19 @@ class Route extends Router {
      * 
      * @return object Route Request Response
     */
-    public static function middleware() {
+    public static function middleware($middleware = null) {
 
-        $route = new Router(self::$_request, self::$_response);
-        return $route;
+        if(!empty($middleware) && $middleware !== null) {
+   
+            self::$_middleware = $middleware;
+
+            $route = new Router(self::$_request, self::$_response, self::$_middleware);
+            return $route;
+        } else {
+
+            $route = new Router(self::$_request, self::$_response);
+            return $route;
+        }
     }
 
     /**

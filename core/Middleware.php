@@ -13,14 +13,16 @@ class Middleware {
      * Creating instances of middlewares
      * 
      * @param array $middlewares class names
+     * @param object Route Request Response
      * @return void
      */
-    public function __construct($middlewares) {
+    public function __construct($middleware, $func) {
 
-        foreach($middlewares as $key => $middleware) {
+        $class = 'middleware\\'.$middleware;
 
-            $class = 'middleware\\'.$middleware;
-            new $class;
+        if(class_exists($class)) { 
+
+            new $class($func);
         }
     }
 }
