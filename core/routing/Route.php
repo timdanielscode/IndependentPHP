@@ -97,7 +97,7 @@ class Route extends Router {
      * 
      * @return object Route Request Response
     */
-    public static function middleware($middleware = null) {
+    public static function middleware($middleware) {
 
         if(!empty($middleware) && $middleware !== null) {
    
@@ -105,11 +105,7 @@ class Route extends Router {
 
             $route = new Router(self::$_request, self::$_response, self::$_middleware);
             return $route;
-        } else {
-
-            $route = new Router(self::$_request, self::$_response);
-            return $route;
-        }
+        } 
     }
 
     /**
