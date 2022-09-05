@@ -202,41 +202,6 @@ class Router extends RouteBinder {
     }    
 
     /**
-     * Some kind of login middleware
-     * 
-     * @param $bool optional
-     * @param $func object closure
-     * @return object Route Request Response
-    */    
-    public function login($func, $bool = true) {
-    
-        if($bool === false && Session::exists("logged_in") === false) {
-
-            return $func();
-        } else if($bool === true && Session::exists("logged_in") === true) {
-
-            return $func();
-        }
-    }    
-
-    /**
-     * Some kind of auth middleware
-     * 
-     * @param $func object closure
-     * @return object Route Request Response
-    */    
-    public function auth($type, $func) {
-
-        if(!empty($type) && $type !== null) {
-
-            if(Session::exists("logged_in") === true && Session::get('user_role') === $type) {
-   
-                return $func();
-            } 
-        }
-    }  
-
-    /**
      * Creating instance of Middleware
      * 
      * @param $func object closure
