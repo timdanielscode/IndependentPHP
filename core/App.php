@@ -10,7 +10,6 @@ namespace core;
 use core\http\Request;
 use core\http\Response;
 use core\routing\Route;
-use core\Middleware;
 
 class App {
 
@@ -28,19 +27,6 @@ class App {
         $this->request = new Request();
         $this->response = new Response();
         $this->route = new Route($this->request, $this->response);
-    }
-
-    /**
-     * Register middlewares
-     * 
-     * @return void
-     */ 
-    public function middleware($middlewares) {
-
-        if($middlewares !== null) {
-
-            $middleware = new Middleware($middlewares);
-        }
     }
 
     /**
