@@ -12,17 +12,32 @@ class Middleware {
     /**
      * Creating instances of middlewares
      * 
-     * @param array $middlewares class names
-     * @param object Route Request Response
+     * @param mixed $middleware class name | and extra value
+     * @param object $func closure function Route Request Response
      * @return void
      */
     public function __construct($middleware, $func) {
 
-        $class = 'middleware\\'.$middleware;
+        if(gettype($middleware) === 'string') {
 
-        if(class_exists($class)) { 
+            $class = 'middleware\\'.$middleware;
 
-            new $class($func);
-        }
+            if(class_exists($class)) { 
+    
+                new $class($func);
+            }
+
+        } else if(gettype($middleware) === 'array') {
+
+            $className = array_keys($middleware);
+            $middlewareValue = array_values($middleware);
+            $class = 'middleware\\'.$className[0];
+
+            if(class_exists($class)) { 
+    
+                new $class($func, $middlewareValue[0]);
+            }
+
+        } else { return; }
     }
 }
