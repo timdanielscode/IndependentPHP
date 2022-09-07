@@ -30,6 +30,20 @@ class App {
     }
 
     /**
+     * Setting/registering middlewares
+     * 
+     * @param array $middlewares alias & filename 
+     * @return object Middleware
+     */
+    public function middleware($middlewares) {
+
+        if($middlewares !== null) {
+
+            return new Middleware($middlewares);
+        }
+    }
+
+    /**
      * @return void 
      */    
     public function run() {

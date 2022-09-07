@@ -202,15 +202,16 @@ class Router extends RouteBinder {
     }    
 
     /**
-     * Creating instance of Middleware
+     * Passing middleware to Middleware run method
      * 
      * @param $func object closure
+     * @return object Middleware 
     */       
     public function run($func) {
 
         if(!empty($this->_middleware) && $this->_middleware !== null) {
-
-            $middleware = new Middleware($this->_middleware, $func);
+ 
+            return Middleware::run($this->_middleware, $func);
         }
     }
 }
