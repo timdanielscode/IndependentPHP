@@ -28,7 +28,7 @@ class Middleware {
         $middlewares = self::$middlewares;
 
         foreach($middlewares as $key => $value) {
-               
+
             if($key === $middleware) {
                     
                 $class = 'middleware\\'.$value;
@@ -47,8 +47,7 @@ class Middleware {
                         
                     return new $class($func, $middlewareValue[0]);
                 }
-        
-            } else { return; }
+            } 
         }
     }
 }
