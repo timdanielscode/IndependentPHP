@@ -68,7 +68,7 @@ class Router extends RouteBinder {
 
         if($routeKeys !== null && $this->getRouteKeyPath($path, $routeKeys) !== null) {
             
-            $this->getRouteKeyPath($path, $routeKeys);
+            $path = $this->getRouteKeyPath($path, $routeKeys);
         }
 
         if($this->uri() == $path || $this->uri() . "/" == $path) {
