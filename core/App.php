@@ -36,7 +36,7 @@ class App {
      * @param array $routeMiddlewares alias & filename
      * @return object Middleware
      */
-    public function middleware($middlewares, $routeMiddlewares) {
+    public function middleware($middlewares = null, $routeMiddlewares = null) {
 
         new Middleware($middlewares, $routeMiddlewares);
     }
