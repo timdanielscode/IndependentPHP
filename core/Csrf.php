@@ -40,6 +40,7 @@ class Csrf {
      * 
      * @param string $token value
      * @param string $postToken value
+     * @return bool true 
      */ 
     public static function validate($token, $postToken) {
 
@@ -48,6 +49,9 @@ class Csrf {
             $request = new Request();
             Session::set('csrf', 'Cross site request forgery!');
             redirect($request->getUri()) . exit();
+        } else {
+
+            return true;
         }
     }
 }
