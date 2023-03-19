@@ -11,24 +11,27 @@ require_once '../config/config.php';
 
 use core\App;
 
+$app = new App();
+
 /**
- * Registering Middlewares
+ * Register Middlewares
+ * 
+ * 
+ * In routes.php
+ * 
+ * Route::middleware("alias")->run(function() { 
+ * 
+ *    Your restricted route
+ * });
+ * 
  */  
 $app->middleware(
     
     [
-        /*
-         *  Middlewares: 'alias' => 'Middleware',
-        */
-    ],
-    [
-        /*
-         *  RouteMiddlewares: 'alias' => 'Middleware',
-        */
+        // 'alias' => 'middleware',
     ]
 );
 
-$app = new App();
 $app->run();
 
 
