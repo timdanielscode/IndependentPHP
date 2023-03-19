@@ -22,13 +22,10 @@ function redirect($path) {
  */     
 function submitted($name) {
 
-    if(!empty($name) && isset($_POST[$name])) {
+    if(!empty($name) && isset($_POST[$name]) || !empty($name) && isset($_GET[$name])) {
+        
         return true;
-    } else if(!empty($name) && isset($_GET[$name])) {
-        return true;
-    } else {
-        return false;
-    }
+    } 
 }
 
 /** 
