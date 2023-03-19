@@ -9,32 +9,17 @@ namespace core;
 
 class Middleware {
 
-    public static $middleware = [];
-    public static $routeMiddleware = [];
+    public static $middlewares = [];
 
     /**
-     * Creating instances of middlewares
+     * Declaring middlewares
      * 
      * @param array $middleware middlewares
-     * @param array $routeMiddleware route middlewares
      * @return object middleware
      */    
-    public function __construct($middleware, $routeMiddleware) {
+    public function __construct($middlewares = null) {
 
-        self::$middleware = $middleware;
-        self::$routeMiddleware = $routeMiddleware;
-
-        if(!empty(self::$middleware) && self::$middleware !== null) {
-
-            foreach(self::$middleware as $key => $value) {
-
-                $class = 'middleware\\'.$value;
-                if(class_exists($class)) { 
-                    
-                    new $class();
-                }
-            }
-        }
+        self::$middlewares = $middlewares;
     }
 
     /**
@@ -46,14 +31,14 @@ class Middleware {
      */
     public static function run($middleware, $func) {
 
-        $routeMiddleware = self::$routeMiddleware;
+        $middlewares = self::$middlewares;
 
-        foreach($routeMiddleware as $key => $value) {
+        foreach($middlewares as $key => $value) {
 
             if($middleware === $key) {
 
                 $class = 'middleware\\'.$value;
-            
+
                 if(class_exists($class)) { 
             
                     return new $class($func);
@@ -64,7 +49,8 @@ class Middleware {
                 foreach($middleware as $key => $value) {
 
                     $middlewareValue = array_values($middleware);
-                    $class = 'middleware\\'.$routeMiddleware[$key];
+
+                    $class = 'middleware\\'.$middlewares[$key];
 
                     if(class_exists($class)) { 
                                     
