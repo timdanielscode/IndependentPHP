@@ -11,6 +11,23 @@ require_once '../config/config.php';
 
 use core\App;
 
+/**
+ * Registering Middlewares
+ */  
+$app->middleware(
+    
+    [
+        /*
+         *  Middlewares: 'alias' => 'Middleware',
+        */
+    ],
+    [
+        /*
+         *  RouteMiddlewares: 'alias' => 'Middleware',
+        */
+    ]
+);
+
 $app = new App();
 $app->run();
 
