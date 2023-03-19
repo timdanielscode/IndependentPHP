@@ -7,6 +7,7 @@
 namespace core;
 
 use core\Session;
+use core\http\Request;
 
 class Csrf {
 
@@ -34,16 +35,19 @@ class Csrf {
 
     /**
      * Validating the token
+     * If validation fails, setting csrf session and 
+     * redirecting back to current request uri global value
      * 
      * @param string $token value
      * @param string $postToken value
-     * @return bool true|false
      */ 
     public static function validate($token, $postToken) {
 
-        if(hash_equals($token, $postToken)) {
-            return true;
-        } 
-        return false;
+        if(hash_equals($token, $postToken) === false) {
+
+            $request = new Request();
+            Session::set('csrf', 'Cross site request forgery!');
+            redirect($request->getUri()) . exit();
+        }
     }
 }
