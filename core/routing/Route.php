@@ -74,7 +74,12 @@ class Route extends Router {
     }
 
     /**
-     * Setting crud route paths for request method type of get
+     * Setting crud route paths
+     * 
+     * In routes
+     * Route::crud('path', '[routeKey]')->add('controller','crud');
+     * 
+     * Will handle following controller methods: index, create, store, read, edit, update and delete
      * 
      * @param string $path route
      * @param string $routeKey preffered route key
@@ -84,8 +89,10 @@ class Route extends Router {
 
         $route = new Router(self::$_request, self::$_response);
         if(self::$_request->getMethod() === 'GET') {
-
             return $route->getRequestCrud($path, $routeKey, self::$_routeKeys);
+
+        } else if(self::$_request->getMethod() === 'POST') {
+            return $route->postRequestCrud($path, $routeKey, self::$_routeKeys);
         } else {
             return $route;
         }

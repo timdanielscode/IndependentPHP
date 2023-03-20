@@ -44,16 +44,42 @@ class Router extends RouteBinder {
      */
     public function getRequestCrud($path, $routeKey, $routeKeys) {
 
-        $getCrudPathParts = ['', 'create', 'read', 'edit'];
+        $getCrudPathParts = ['', 'create', 'read', 'edit', 'delete'];
         
         foreach($getCrudPathParts as $getCrudPathPart) {
 
             $crudPath = $path . '/' . $getCrudPathPart;
-            if($getCrudPathPart === 'read' || $getCrudPathPart === 'edit') {
+            if($getCrudPathPart === 'read' || $getCrudPathPart === 'edit' || $getCrudPathPart === 'delete') {
 
                 $crudPath = $path . '/' . $routeKey . '/' . $getCrudPathPart;
             }
             $this->getRequest($crudPath, $routeKeys);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Setting crud route paths for request method type of post
+     * (store, update)
+     * 
+     * @param string $path route
+     * @param array $routeKey 
+     * @param array $routeKeys 
+     * @return object Router Request Response
+     */
+    public function postRequestCrud($path, $routeKey, $routeKeys) {
+
+        $postCrudPathParts = ['store', 'update'];
+        
+        foreach($postCrudPathParts as $postCrudPathPart) {
+
+            $crudPath = $path . '/' . $postCrudPathPart;
+            if($postCrudPathPart === 'update') {
+
+                $crudPath = $path . '/' . $routeKey . '/' . $postCrudPathPart;
+            }
+            $this->postRequest($crudPath, $routeKeys);
         }
 
         return $this;
@@ -180,16 +206,25 @@ class Router extends RouteBinder {
 
                         switch ($lastKeyValue) {
 
-                            case "create" :
+                            case "create":
                                 $method = "create";
                             break;
-                            case "read" :
+                            case "store":
+                                $method = "store";
+                            break;
+                            case "read":
                                 $method = "read";
                             break;
                             case "edit":
                                 $method = "edit";
                             break;
-                            default : 
+                            case "update":
+                                $method = "update";
+                            break;
+                            case "delete":
+                                $method = "delete";
+                            break;
+                            default: 
                                 $method = "index";
                             break;
                         }
