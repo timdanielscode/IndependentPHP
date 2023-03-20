@@ -7,6 +7,8 @@
 namespace validation;
 
 use core\validation\Validate;
+use app\controllers\Controller;
+use core\Session;
 
 class Rules {
 
