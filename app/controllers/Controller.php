@@ -7,6 +7,8 @@
 
 namespace app\controllers;
 
+use core\Session;
+
 class Controller {
 
     /**
@@ -19,10 +21,17 @@ class Controller {
     public function view($path, $args = []) {
     
         if($path) {
+
             if(!empty($args)) {
                 extract($args);
             }
-            require_once "../app/views/" . $path . ".php";
+            
+            if($path !== '/404/404') {
+                Session::set('view', $path);
+            }
+
+            include("../app/views/" . $path . ".php");
+            
         } 
         return $this;
     }
@@ -94,4 +103,7 @@ class Controller {
 
         echo '<link rel='.'"'.'stylesheet'.'" '. 'type='.'"'.'text/css'.'" '. 'href='.'"'.$href.'"'.'>';
     }
+
+
+
 }
