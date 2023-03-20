@@ -17,7 +17,7 @@ class Rules {
      * 
      * https://indy-php.com/docs/validation
      * 
-     * Create instance of Validate 
+     * https://indy-php.com/docs/
      * Chain input method on instance variable and add html input name as argument
      * Chain as method to input and add alias as argument
      * Chain rules method to as method and add array of validation rules as argument
@@ -27,14 +27,26 @@ class Rules {
      * return $this
      */
 
+
     /**
-     * @return bool
-    */     
-    public function validated() {
+     * Validating validation rules
+     * On fail, returning view with extracted validation error rules and if exists request data
+     * 
+     * @return mixed bool | void
+     */
+    public function validated($request = null) {
 
-        if(empty($this->errors) ) {
+        if(empty($this->errors) ) { return true; } else {
 
-            return true;
+          if(!empty($request) && $request !== null) {
+            
+              $data['data'] = $request; 
+          }
+
+          $controller = new Controller();
+          $data['rules'] = $this->errors;
+
+          return $controller->view(Session::get('view'), $data) . exit();
         }
     }
 }
