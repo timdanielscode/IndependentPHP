@@ -14,7 +14,6 @@ class Route extends Router {
 
     private static $_response, $_request, $_routeKeys, $_middleware;
 
-
     /**
      * Declaring Request & Response
      * 
@@ -69,6 +68,24 @@ class Route extends Router {
         if(self::$_request->getMethod() === 'POST') {
 
            return $route->postRequest($path, self::$_routeKeys);
+        } else {
+            return $route;
+        }
+    }
+
+    /**
+     * Setting crud route paths for request method type of get
+     * 
+     * @param string $path route
+     * @param string $routeKey preffered route key
+     * @return object Router Request Response
+     */
+    public static function crud($path, $routeKey) {
+
+        $route = new Router(self::$_request, self::$_response);
+        if(self::$_request->getMethod() === 'GET') {
+
+            return $route->getRequestCrud($path, $routeKey, self::$_routeKeys);
         } else {
             return $route;
         }

@@ -34,6 +34,32 @@ class Router extends RouteBinder {
     }
 
     /**
+     * Setting crud route paths for request method type of get
+     * (index, create, read, edit)
+     * 
+     * @param string $path route
+     * @param array $routeKey 
+     * @param array $routeKeys 
+     * @return object Router Request Response
+     */
+    public function getRequestCrud($path, $routeKey, $routeKeys) {
+
+        $getCrudPathParts = ['', 'create', 'read', 'edit'];
+        
+        foreach($getCrudPathParts as $getCrudPathPart) {
+
+            $crudPath = $path . '/' . $getCrudPathPart;
+            if($getCrudPathPart === 'read' || $getCrudPathPart === 'edit') {
+
+                $crudPath = $path . '/' . $routeKey . '/' . $getCrudPathPart;
+            }
+            $this->getRequest($crudPath, $routeKeys);
+        }
+
+        return $this;
+    }
+
+    /**
      * Setting route path by comparing route path with current request uri value on
      * request method type of get
      * 
@@ -47,12 +73,15 @@ class Router extends RouteBinder {
             
             $path = $this->getRouteKeyPath($path, $routeKeys);
         }
+
         if(strtok($this->request->getUri(), '?') == $path || strtok($this->request->getUri(), '?') . "/" == $path) {
 
             if($this->request->getMethod() === 'GET') {
+
                 $this->_path = $path;
             } 
         } 
+
         return $this;
     }
 
@@ -76,6 +105,7 @@ class Router extends RouteBinder {
             if($this->request->getMethod() === 'POST') {
 
                 if($this->_routeBinder) {
+
                     $this->_routeBinder->postRequestVariables();
                 }
                 $this->_path = $path;  
@@ -123,6 +153,8 @@ class Router extends RouteBinder {
     }
 
     /**
+     * Creating instances of controller classes
+     * 
      * @param string $class name
      * @param string $method optional 'action'
      * @return object Controller
@@ -132,22 +164,51 @@ class Router extends RouteBinder {
         if($this->uri() == $this->_path || $this->uri() . "/" == $this->_path) {
             
             $namespaceClass = $this->namespace($class);
+
             if(class_exists($namespaceClass)) { 
 
                 $instance = new $namespaceClass;
+                
                 if($method) {
-                    if(method_exists($namespaceClass, $method)) {
+
+                    if($method === 'crud') {
+
+                        $pathParts = explode('/', $this->_path);
+                        
+                        $lastKey = array_key_last($pathParts);
+                        $lastKeyValue = $pathParts[$lastKey];
+
+                        switch ($lastKeyValue) {
+
+                            case "create" :
+                                $method = "create";
+                            break;
+                            case "read" :
+                                $method = "read";
+                            break;
+                            case "edit":
+                                $method = "edit";
+                            break;
+                            default : 
+                                $method = "index";
+                            break;
+                        }
+                    }
+
+                    if(method_exists($namespaceClass, $method) ) {
                         
                         $this->request_vals = $this->request->get();
-                       if($this->_routeBinder) {
-                        
-                           if($this->_routeBinder->getRequestVariables() !== null) {
-                                $this->request_vals = array_merge($this->request_vals, $this->_routeBinder->getRequestVariables());
-                           }    
-                        }
+
+                        if($this->_routeBinder && !empty($this->_routeBinder->getRequestVariables()) && $this->_routeBinder->getRequestVariables() !== null) {
+
+                            $this->request_vals = array_merge($this->request_vals, $this->_routeBinder->getRequestVariables());
+                        }    
+                            
                         return $instance->$method($this->request_vals) . exit();
                     } 
+
                 } else {
+
                     return $instance . exit(); 
                 }
             } 
