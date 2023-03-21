@@ -8,14 +8,14 @@ namespace core\routing;
 
 use app\controllers\http\ResponseController;
 use core\Session;
-use core\Middleware;
+use core\http\Middleware;
 
 class Router extends RouteBinder {
 
     private $_uri, $_path, $request, $request_vals, $_pathRouteKeyKeys, $_error;
     private $_partsPath = [];
     private $_routeBinder;
-    private $_middleware;
+    private $_middlewareAlias;
 
     /**
      * Declaring Request & Response
@@ -23,13 +23,13 @@ class Router extends RouteBinder {
      * @return void
      */
     public function __construct($request, $response, $middleware = null) {
-    
+
         $this->request = $request;
         $this->response = $response;
 
         if($middleware !== null) {
 
-            $this->_middleware = $middleware;
+            $this->_middlewareAlias = $middleware;
         }
     }
 
@@ -298,16 +298,16 @@ class Router extends RouteBinder {
     }    
 
     /**
-     * Passing middleware to Middleware run method
+     * Passing middleware aliases
      * 
      * @param $func object closure
      * @return object Middleware 
     */       
     public function run($func) {
 
-        if(!empty($this->_middleware) && $this->_middleware !== null) {
+        if(!empty($this->_middlewareAlias) && $this->_middlewareAlias !== null) {
  
-            return Middleware::run($this->_middleware, $func);
+            return Middleware::route($this->_middlewareAlias, $func);
         }
     }
 }

@@ -13,31 +13,18 @@ use core\routing\Route;
 
 class App {
 
-    public $route;
-    public $request;
-    public $response;
+    private $route, $request, $response;
 
     /**
      * Declaring Request, Response and Route
      * 
      * @return void
      */    
-    public function __construct() {
+    public function __construct($middleware) {
 
         $this->request = new Request();
         $this->response = new Response();
         $this->route = new Route($this->request, $this->response);
-    }
-
-    /**
-     * Setting/registering middlewares
-     * 
-     * @param array $middlewares alias & filename 
-     * @return object Middleware
-     */
-    public function middleware($middlewares = null) {
-
-        new Middleware($middlewares);
     }
 
     /**
