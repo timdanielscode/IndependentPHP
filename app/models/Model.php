@@ -11,22 +11,17 @@ use database\DB;
 
 class Model {
 
-   private static $modelTable;
+   private static $table;
 
    /**
-    * Setting model table name if exists
+    * Setting model table name
     * 
     * @param string $table model
     * @return void
     */
    public static function table($table) {
 
-      $getTable = DB::try()->raw("SELECT 1 FROM $table LIMIT 1")->first();
-
-      if($getTable[1] === '1') {
-
-         self::$modelTable = $table; 
-      }
+      self::$table = $table;
    }
 
    /**
@@ -37,7 +32,7 @@ class Model {
    public static function all() {
 
       self::createInstance();
-      return DB::try()->select('*')->from(self::$modelTable)->fetch();
+      return DB::try()->select('*')->from(self::$table)->fetch();
    }
 
    /**
@@ -51,7 +46,7 @@ class Model {
       if($id !== null) {
 
          self::createInstance();
-         return DB::try()->select('*')->from(self::$modelTable)->where('id', '=', $id)->first();
+         return DB::try()->select('*')->from(self::$table)->where('id', '=', $id)->first();
       }
    }
 
@@ -68,7 +63,7 @@ class Model {
       if($column !== null && $value !== null) {
          
          self::createInstance();
-         return DB::try()->select('*')->from(self::$modelTable)->where($column, $operator, $value)->first();
+         return DB::try()->select('*')->from(self::$table)->where($column, $operator, $value)->first();
       }
    }
 
@@ -83,7 +78,7 @@ class Model {
       if(!empty($data) && $data !== null) {
          
          self::createInstance();
-         return DB::try()->insert(self::$modelTable, $data);
+         return DB::try()->insert(self::$table, $data);
       }
    }
 
@@ -101,7 +96,7 @@ class Model {
          foreach($where as $key => $value) {
 
             self::createInstance();
-            return DB::try()->update(self::$modelTable)->set($data)->where($key, '=', $value)->run();
+            return DB::try()->update(self::$table)->set($data)->where($key, '=', $value)->run();
          }
       }
    }
@@ -118,7 +113,7 @@ class Model {
       if(!empty($column) && $column !== null && !empty($value) && $value !== null) {
 
          self::createInstance();
-         return DB::try()->delete(self::$modelTable)->where($column, '=', $value)->run();
+         return DB::try()->delete(self::$table)->where($column, '=', $value)->run();
       }
    }
 
