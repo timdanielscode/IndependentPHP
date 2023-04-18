@@ -40,9 +40,10 @@ class Router extends RouteBinder {
      * @param string $path route
      * @param array $routeKey 
      * @param array $routeKeys 
+     * @param array $sessionRouteKeys
      * @return object Router Request Response
      */
-    public function getRequestCrud($path, $routeKey, $routeKeys) {
+    public function getRequestCrud($path, $routeKey, $routeKeys, $sessionRouteKeys = null) {
 
         $getCrudPathParts = ['', 'create', 'read', 'edit', 'delete'];
         
@@ -53,7 +54,7 @@ class Router extends RouteBinder {
 
                 $crudPath = $path . '/' . $routeKey . '/' . $getCrudPathPart;
             }
-            $this->getRequest($crudPath, $routeKeys);
+            $this->getRequest($crudPath, $routeKeys, $sessionRouteKeys);
         }
 
         return $this;
@@ -66,9 +67,10 @@ class Router extends RouteBinder {
      * @param string $path route
      * @param array $routeKey 
      * @param array $routeKeys 
+     * @param array $sessionRouteKeys
      * @return object Router Request Response
      */
-    public function postRequestCrud($path, $routeKey, $routeKeys) {
+    public function postRequestCrud($path, $routeKey, $routeKeys, $sessionRouteKeys = null) {
 
         $postCrudPathParts = ['store', 'update'];
         
@@ -79,7 +81,7 @@ class Router extends RouteBinder {
 
                 $crudPath = $path . '/' . $routeKey . '/' . $postCrudPathPart;
             }
-            $this->postRequest($crudPath, $routeKeys);
+            $this->postRequest($crudPath, $routeKeys, $sessionRouteKeys);
         }
 
         return $this;
@@ -90,14 +92,15 @@ class Router extends RouteBinder {
      * request method type of get
      * 
      * @param string $path route
-     * @param array $routeKeys optional
+     * @param array $routeKeys
+     * @param array $sessionRouteKeys
      * @return object Router Request Response
      */
-    public function getRequest($path, $routeKeys = null) {
+    public function getRequest($path, $routeKeys = null, $sessionRouteKeys = null) {
 
-        if($routeKeys !== null && $this->getRouteKeyPath($path, $routeKeys) !== null) {
+        if($routeKeys !== null && $this->getRouteKeyPath($path, $routeKeys, $sessionRouteKeys) !== null) {
             
-            $path = $this->getRouteKeyPath($path, $routeKeys);
+            $path = $this->getRouteKeyPath($path, $routeKeys, $sessionRouteKeys);
         }
 
         if(strtok($this->request->getUri(), '?') == $path || strtok($this->request->getUri(), '?') . "/" == $path) {
@@ -116,14 +119,15 @@ class Router extends RouteBinder {
      * request method type of post
      * 
      * @param string $path route
-     * @param array $routeKeys optional
+     * @param array $routeKeys
+     * @param array $sessionRouteKeys
      * @return object Router Request Response
      */
-    public function postRequest($path, $routeKeys = null) {
+    public function postRequest($path, $routeKeys = null, $sessionRouteKeys = null) {
 
-        if($routeKeys !== null && $this->getRouteKeyPath($path, $routeKeys) !== null) {
+        if($routeKeys !== null && $this->getRouteKeyPath($path, $routeKeys, $sessionRouteKeys) !== null) {
             
-            $path = $this->getRouteKeyPath($path, $routeKeys);
+            $path = $this->getRouteKeyPath($path, $routeKeys, $sessionRouteKeys);
         }
 
         if($this->uri() == $path || $this->uri() . "/" == $path) {
@@ -163,19 +167,22 @@ class Router extends RouteBinder {
      * 
      * @param string $path route
      * @param array $routeKeys
+     * @param array $sessionRouteKeys
      * @return void
      */
-    public function getRouteKeyPath($path, $routeKeys) {
+    public function getRouteKeyPath($path, $routeKeys, $sessionRouteKeys) {
 
-        $checkKeys = implode('|', $routeKeys);
-        if(preg_match("($checkKeys)", $path) === 1) { 
+        foreach($routeKeys as $routeKey) {
 
-            $this->setRouteKeyKeys($path, $routeKeys);
-            $this->_routeBinder = new RouteBinder();
-            $this->_routeBinder->setPath($this->_partsPath, $this->_pathRouteKeyKeys, $this->request->getUri());
-            
-            return $this->_routeBinder->getPath();  
-        } 
+            if(strpos($path, '['.$routeKey.']') !== false) {
+
+                $this->setRouteKeyKeys($path, $routeKeys);
+                $this->_routeBinder = new RouteBinder();
+                $this->_routeBinder->setPath($this->_partsPath, $this->_pathRouteKeyKeys, $this->request->getUri(), $routeKey, $sessionRouteKeys);
+
+                return $this->_routeBinder->getPath();
+            } 
+        }
     }
 
     /**
@@ -253,14 +260,15 @@ class Router extends RouteBinder {
     /**
      * @param string $path route
      * @param string $view name
-     * @param array $routeKeys optional
+     * @param array $routeKeys
+     * @param array $sessionRouteKeys
      * @return object Controller
      */ 
-    public function handleView($path, $view, $routeKeys = null) {
+    public function handleView($path, $view, $routeKeys = null, $sessionRouteKeys = null) {
 
-        if($routeKeys !== null && $this->getRouteKeyPath($path, $routeKeys) !== null) {
+        if($routeKeys !== null && $this->getRouteKeyPath($path, $routeKeys, $sessionRouteKeys) !== null) {
             
-            $path = $this->getRouteKeyPath($path, $routeKeys);
+            $path = $this->getRouteKeyPath($path, $routeKeys, $sessionRouteKeys);
         }
      
         if(strtok($this->request->getUri(), '?') == $path || strtok($this->request->getUri(), '?') . "/" == $path) {
