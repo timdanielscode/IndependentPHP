@@ -109,7 +109,7 @@ class Router extends RouteBinder {
 
         }
 
-        if(strtok($this->request->getUri(), '?') == $path || strtok($this->request->getUri(), '?') . "/" == $path) {
+        if($this->uri() == $path || $this->uri() . "/" == $path) {
   
             if($this->request->getMethod() === 'GET') {
 
@@ -289,7 +289,7 @@ class Router extends RouteBinder {
             $path = $this->getRouteKeyPath($path, $routeKeys, $sessionRouteKeys);
         }
      
-        if(strtok($this->request->getUri(), '?') == $path || strtok($this->request->getUri(), '?') . "/" == $path) {
+        if($this->uri() === $path || $this->uri() . "/" == $path) {
             
             if($this->request->getMethod() === 'GET') {
 
@@ -307,10 +307,8 @@ class Router extends RouteBinder {
      */   
     public function uri() {
         
-        $this->_uri = $this->request->getUri();
-        $this->_uri = strtok($this->_uri, '?');
-            
-        return $this->_uri; 
+        $uri = strtok($this->request->getUri(), '?');
+        return $uri; 
     }
     
     /**
