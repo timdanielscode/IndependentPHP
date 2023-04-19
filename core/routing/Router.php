@@ -16,7 +16,7 @@ class Router extends RouteBinder {
     private $_partsPath = [];
     private $_routeBinder;
     private $_middlewareAlias;
-    private $_crudRoute = false;
+    private $_crud = false;
 
     /**
      * Declaring Request & Response
