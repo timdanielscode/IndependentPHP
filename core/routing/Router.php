@@ -16,6 +16,7 @@ class Router extends RouteBinder {
     private $_partsPath = [];
     private $_routeBinder;
     private $_middlewareAlias;
+    private $_crudRoute = false;
 
     /**
      * Declaring Request & Response
@@ -35,7 +36,7 @@ class Router extends RouteBinder {
 
     /**
      * Setting crud route paths for request method type of get
-     * (index, create, read, edit)
+     * (index, create, read, edit, delete)
      * 
      * @param string $path route
      * @param array $routeKey 
@@ -50,10 +51,12 @@ class Router extends RouteBinder {
         foreach($getCrudPathParts as $getCrudPathPart) {
 
             $crudPath = $path . '/' . $getCrudPathPart;
-            if($getCrudPathPart === 'read' || $getCrudPathPart === 'edit' || $getCrudPathPart === 'delete') {
+            if($getCrudPathPart === '' || $getCrudPathPart === 'create' || $getCrudPathPart === 'read' || $getCrudPathPart === 'edit' || $getCrudPathPart === 'delete') {
 
                 $crudPath = $path . '/' . $routeKey . '/' . $getCrudPathPart;
             }
+
+            $this->_crud = true;
             $this->getRequest($crudPath, $routeKeys, $sessionRouteKeys);
         }
 
@@ -81,6 +84,8 @@ class Router extends RouteBinder {
 
                 $crudPath = $path . '/' . $routeKey . '/' . $postCrudPathPart;
             }
+
+            $this->_crud = true;
             $this->postRequest($crudPath, $routeKeys, $sessionRouteKeys);
         }
 
@@ -101,10 +106,11 @@ class Router extends RouteBinder {
         if($routeKeys !== null && $this->getRouteKeyPath($path, $routeKeys, $sessionRouteKeys) !== null) {
             
             $path = $this->getRouteKeyPath($path, $routeKeys, $sessionRouteKeys);
+
         }
 
         if(strtok($this->request->getUri(), '?') == $path || strtok($this->request->getUri(), '?') . "/" == $path) {
-
+  
             if($this->request->getMethod() === 'GET') {
 
                 $this->_path = $path;
@@ -195,46 +201,18 @@ class Router extends RouteBinder {
     public function add($class, $method = null) {  
 
         if($this->uri() == $this->_path || $this->uri() . "/" == $this->_path) {
-            
+
             $namespaceClass = $this->namespace($class);
 
             if(class_exists($namespaceClass)) { 
 
                 $instance = new $namespaceClass;
                 
-                if($method) {
+                if($method || $this->_crud === true) {
 
-                    if($method === 'crud') {
+                    if($this->_crud === true) {
 
-                        $pathParts = explode('/', $this->_path);
-                        
-                        $lastKey = array_key_last($pathParts);
-                        $lastKeyValue = $pathParts[$lastKey];
-
-                        switch ($lastKeyValue) {
-
-                            case "create":
-                                $method = "create";
-                            break;
-                            case "store":
-                                $method = "store";
-                            break;
-                            case "read":
-                                $method = "read";
-                            break;
-                            case "edit":
-                                $method = "edit";
-                            break;
-                            case "update":
-                                $method = "update";
-                            break;
-                            case "delete":
-                                $method = "delete";
-                            break;
-                            default: 
-                                $method = "index";
-                            break;
-                        }
+                        $method = $this->getCrudMethod();
                     }
 
                     if(method_exists($namespaceClass, $method) ) {
@@ -255,6 +233,46 @@ class Router extends RouteBinder {
                 }
             } 
         } 
+    }
+
+    /**
+     * Getting crud method type
+     * 
+     * @return string $method crud method type
+     */
+    public function getCrudMethod() {
+
+        $pathParts = explode('/', $this->_path);
+                        
+        $lastKey = array_key_last($pathParts);
+        $lastKeyValue = $pathParts[$lastKey];
+
+        switch ($lastKeyValue) {
+
+            case "":
+                $method = "index";
+            break;
+            case "create":
+                $method = "create";
+            break;
+            case "store":
+                $method = "store";
+            break;
+            case "read":
+                $method = "read";
+            break;
+            case "edit":
+                $method = "edit";
+            break;
+            case "update":
+                $method = "update";
+            break;
+            case "delete":
+                $method = "delete";
+            break;
+        }
+
+        return $method;
     }
 
     /**
