@@ -1,32 +1,20 @@
-# IndyPHP
+![alt text](http://indy-php.com/assets/img/indyphp.png)
 
-IndyPHP is a web application framework and is been build without any dependencies.
+PHP framework without dependencies, faster development applying just the essentials.<br>
+No external packages or libraries are included. 
 
-## Components
 
- - MVC
- - Routing
+### Components
+
+ - Custom routing
+ - Mvc pattern
  - View templating
+ - Csrf tokens
  - Querybuilder
+ - Middlewares
  - Validation
- 
- ## Extensions
- 
- - Auth.php for authentication & authorization.
+ - Auth
 
-## Security
+### Documentation 
 
-  - SQL injection prevention
-  - CSRF protection
-  
-## Installation
-
-After you've cloned the respository, rename the config-example.ini to config.ini. This is the file that holds the configuration values for setting up the database connection. File location: /config/database/config-example.ini. Next, add your database details.
-  
-## Documentation  
-
-[indy-php.com](https://indy-php.com)
-  
-## Login system
-
-[indy-php.com/login-system](https://indy-php.com/login-system)
+[https://indy-php.com](https://indy-php.com/)
