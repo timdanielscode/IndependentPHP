@@ -51,8 +51,9 @@ class Router extends RouteBinder {
         foreach($getCrudPathParts as $getCrudPathPart) {
 
             $crudPath = $path . '/' . $getCrudPathPart;
-            if($getCrudPathPart === '' || $getCrudPathPart === 'create' || $getCrudPathPart === 'read' || $getCrudPathPart === 'edit' || $getCrudPathPart === 'delete') {
 
+            if ($getCrudPathPart === 'read' || $getCrudPathPart === 'edit' || $getCrudPathPart === 'delete') {
+                
                 $crudPath = $path . '/' . $routeKey . '/' . $getCrudPathPart;
             }
 
@@ -108,9 +109,8 @@ class Router extends RouteBinder {
             $path = $this->getRouteKeyPath($path, $routeKeys, $sessionRouteKeys);
 
         }
+        if($this->uri() === $path || $this->uri() . "/" === $path) {
 
-        if($this->uri() == $path || $this->uri() . "/" == $path) {
-  
             if($this->request->getMethod() === 'GET') {
 
                 $this->_path = $path;
