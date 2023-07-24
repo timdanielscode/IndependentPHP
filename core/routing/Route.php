@@ -12,7 +12,7 @@ use core\http\Response;
 
 class Route extends Router {
 
-    private static $_response, $_request, $_routeKeys, $_sessionRouteKeys = [], $_middleware;
+    private static $_response, $_request, $_routeKeys, $_middleware;
 
     /**
      * Declaring Request & Response
@@ -40,20 +40,6 @@ class Route extends Router {
     }
 
     /**
-     * Setting route key based on a session
-     * 
-     * @param string $routeKey a setted routeKey
-     * @return void
-     */
-    public static function sessionRouteKey($routeKey) {
-
-        if(in_array($routeKey, self::$_routeKeys) === true) {
-
-            array_push(self::$_sessionRouteKeys, $routeKey);
-        }
-    }
-
-    /**
      * Setting route path with type of request method get 
      * 
      * @param string $path route
@@ -64,7 +50,7 @@ class Route extends Router {
         $route = new Router(self::$_request, self::$_response);
         if(self::$_request->getMethod() === 'GET') {
 
-           return $route->getRequest($path, self::$_routeKeys, self::$_sessionRouteKeys);
+           return $route->getRequest($path, self::$_routeKeys);
         } else {
             return $route;
         }
@@ -81,7 +67,7 @@ class Route extends Router {
         $route = new Router(self::$_request, self::$_response);
         if(self::$_request->getMethod() === 'POST') {
 
-           return $route->postRequest($path, self::$_routeKeys, self::$_sessionRouteKeys);
+           return $route->postRequest($path, self::$_routeKeys);
         } else {
             return $route;
         }
@@ -103,10 +89,10 @@ class Route extends Router {
 
         $route = new Router(self::$_request, self::$_response);
         if(self::$_request->getMethod() === 'GET') {
-            return $route->getRequestCrud($path, $routeKey, self::$_routeKeys, self::$_sessionRouteKeys);
+            return $route->getRequestCrud($path, $routeKey, self::$_routeKeys);
 
         } else if(self::$_request->getMethod() === 'POST') {
-            return $route->postRequestCrud($path, $routeKey, self::$_routeKeys, self::$_sessionRouteKeys);
+            return $route->postRequestCrud($path, $routeKey, self::$_routeKeys);
         } else {
             return $route;
         }
@@ -124,7 +110,7 @@ class Route extends Router {
         $route = new Router(self::$_request, self::$_response);
         if(self::$_request->getMethod() === 'GET') {
 
-           return $route->handleView($path, $view, self::$_routeKeys, self::$_sessionRouteKeys);
+           return $route->handleView($path, $view, self::$_routeKeys);
         } else {
             return $route;
         }
