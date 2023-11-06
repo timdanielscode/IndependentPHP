@@ -46,30 +46,17 @@ class Routing {
     /**
      * Setting controller
      * 
-     * @param string $name controller name
+     * @param array $class controller name, method name
      * @return object Routing 
      */ 
-    public function controller($name) {
+    public function set($class) {
 
         if(!empty($this->_path) && $this->_path !== null) {
 
-            $this->checkClass($name);
+            $this->checkClass(key($class), $class[key($class)]);
         }
 
         return $this;
-    }
-
-    /**
-     * Setting method
-     * 
-     * @param string $name method name
-     */ 
-    public function method($name) {
-
-        if(!empty($this->_class) && $this->_class !== null) {
-
-            $this->checkMethod($name);
-        }
     }
 
     /**
@@ -88,13 +75,15 @@ class Routing {
     /**
      * Checking class and if exists, setting _class property
      * 
-     * @param string $name path name
+     * @param string $class controller name
+     * @param string $method method name
      */ 
-    private function checkClass($class) {
+    private function checkClass($class, $method) {
 
         if(file_exists('../app/controllers/' . $class . '.php') === true) {
 
             $this->_class = 'app\controllers\\' . $class;
+            $this->checkMethod($method);
         }
     }
 

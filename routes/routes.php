@@ -2,4 +2,4 @@
 
 use core\routing\Route;
 
-Route::set('GET')->uri('/')->controller('HomeController')->method('index');
+Route::set('GET')->uri('/')->set(['HomeController' => 'index']);
