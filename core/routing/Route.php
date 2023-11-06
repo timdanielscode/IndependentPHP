@@ -6,9 +6,18 @@
  */
 namespace core\routing;
 
+use core\http\Request;
+
 class Route {
 
     private static $_type, $_class, $_method, $_path;
+    private static $_request;
+
+
+    private function __construct() {
+
+        self::$_request = new Request();
+    }
 
     /**
      * Setting route
@@ -31,7 +40,9 @@ class Route {
      */ 
     public static function checkType($type) {
 
-        if(key($type) === $_SERVER['REQUEST_METHOD']) {
+        $route = new Route();
+
+        if(key($type) === self::$_request->getMethod()) {
 
             self::$_type = $type;
             self::checkPath($type[key($type)]);
@@ -46,7 +57,7 @@ class Route {
      */ 
     private static function checkPath($path) {
 
-        if($path === $_SERVER['REQUEST_URI']) {
+        if($path === self::$_request->getUri()) {
 
             self::$_path = $path;
             self::checkClass(self::$_class);
@@ -84,6 +95,12 @@ class Route {
     private static function instance($class, $method) {
 
         $instance = new $class;
+    
+        if(self::$_request->getMethod() === 'POST') {
+
+            return $instance->$method(self::$_request->get());
+        }
+
         return $instance->$method();
     }
 }

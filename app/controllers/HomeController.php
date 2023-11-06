@@ -10,4 +10,9 @@ class HomeController extends Controller {
 
         return $this->view("home/index");
     }
+
+    public function data($request) {
+
+        print_r($request);
+    }
 }

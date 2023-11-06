@@ -15,5 +15,11 @@
     </style>
     <body>
         <a href="https://indy-php.com/" target="_blank"><img src="/assets/img/indyPHP-logo.png"></a>
+
+        <form action="/test" method="POST">
+
+            <input type="text" name="test"/>
+            <input name="submit" type="submit" value="submit"/>
+        </form>
     </body>
 </html> 
