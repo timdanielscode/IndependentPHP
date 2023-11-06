@@ -28,32 +28,16 @@ class Routing {
     }
 
     /**
-     * Setting uri
+     * Setting uri, controller and method
      * 
      * @param string $path uri path
      * @return object Routing 
      */ 
-    public function uri($path) {
+    public function uri($path, $class) {
 
         if(!empty($this->_type) && $this->_type !== null) {
 
-            $this->checkPath($path);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Setting controller
-     * 
-     * @param array $class controller name, method name
-     * @return object Routing 
-     */ 
-    public function set($class) {
-
-        if(!empty($this->_path) && $this->_path !== null) {
-
-            $this->checkClass(key($class), $class[key($class)]);
+            $this->checkPath($path, $class);
         }
 
         return $this;
@@ -64,11 +48,12 @@ class Routing {
      * 
      * @param string $name path name
      */ 
-    private function checkPath($name) {
+    private function checkPath($path, $class) {
 
-        if($name === $_SERVER['REQUEST_URI']) {
+        if($path === $_SERVER['REQUEST_URI']) {
 
-            $this->_path = $name;
+            $this->_path = $path;
+            $this->checkClass(key($class), $class[key($class)]);
         }
     }
 
