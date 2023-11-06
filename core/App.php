@@ -33,6 +33,5 @@ class App {
     public function run() {
 
         require_once '../routes/routes.php';
-        $this->route->uriNotFound(404);
     }
 }
