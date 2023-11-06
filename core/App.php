@@ -24,7 +24,7 @@ class App {
 
         $this->request = new Request();
         $this->response = new Response();
-        $this->route = new Route($this->request, $this->response);
+        //$this->route = new Route($this->request, $this->response);
     }
 
     /**
