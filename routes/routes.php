@@ -2,5 +2,5 @@
 
 use core\routing\Route;
 
-Route::set(['GET' => '/'], ['HomeController' => 'index']);
-Route::set(['POST' => '/test'], ['HomeController' => 'data']);
+new Route(['/'], ['HomeController' => 'index']);
+new Route(['/test'], ['HomeController' => 'data']);

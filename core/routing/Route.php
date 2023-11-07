@@ -10,79 +10,53 @@ use core\http\Request;
 
 class Route {
 
-    private static $_type, $_class, $_method, $_path;
-    private static $_request;
+    private $_type, $_path, $_class, $_request;
 
+    public function __construct($path, $class) {
 
-    private function __construct() {
-
-        self::$_request = new Request();
-    }
-
-    /**
-     * Setting route
-     * 
-     * @param array $type request type and path
-     * @param array $class class and method name
-     */ 
-    public static function set($type, $class) {
-
-        self::$_class = key($class);
-        self::$_method = $class[key($class)];
-
-        self::checkType($type);
-    }
-
-    /**
-     * Checking request type method
-     * 
-     * @param array $type type of request and path
-     */ 
-    public static function checkType($type) {
-
-        $route = new Route();
-
-        if(key($type) === self::$_request->getMethod()) {
-
-            self::$_type = $type;
-            self::checkPath($type[key($type)]);
-        }
+        $this->_request = new Request();
+        $this->checkPath($path, $class);
     }
 
     /**
      * Checking request uri path
      * 
-     * @param string $name path name
-     * @param array $class array controller, method
+     * @param array $path uri path name
+     * @param array $class class name, method name
      */ 
-    private static function checkPath($path) {
+    private function checkPath($path, $class) {
 
-        if($path === self::$_request->getUri()) {
+        if($path[0] === $this->_request->getUri()) {
 
-            self::$_path = $path;
-            self::checkClass(self::$_class);
+            $this->_path = $path[0];
+            $this->checkClass($class);
         }
     }
 
     /**
      * Checking if class exists
+     * 
+     * @param array $class class name, method name
      */ 
-    private static function checkClass() {
+    private function checkClass($class) {
 
-        if(file_exists('../app/controllers/' . self::$_class . '.php') === true) {
+        if(file_exists('../app/controllers/' . key($class) . '.php') === true) {
 
-            self::checkMethod();
+            $this->_class = key($class);
+            $this->checkMethod($class[key($class)]);
         }
     }
 
     /**
      * Checking method exists
+     * 
+     * @param string $name method name
      */ 
-    private static function checkMethod() {
+    private function checkMethod($name) {
 
-        if(method_exists('app\controllers\\' . self::$_class, self::$_method)) {
+        if(method_exists('app\controllers\\' . $this->_class, $name)) {
 
-            self::instance('app\controllers\\' . self::$_class, self::$_method);
+            $this->instance('app\controllers\\' . $this->_class, $name);
         } 
     }
 
@@ -92,15 +66,15 @@ class Route {
      * @param string $class class name
      * @param string $method method name
      */
-    private static function instance($class, $method) {
+    private function instance($class, $method) {
 
-        $instance = new $class;
+        $instance = new $class();
     
-        if(self::$_request->getMethod() === 'POST') {
+        if($this->_request->getMethod() === 'POST') {
 
-            return $instance->$method(self::$_request->get());
+            return $instance->$method($this->_request->get());
         }
 
-        return $instance->$method();
+        $instance->$method();
     }
 }
