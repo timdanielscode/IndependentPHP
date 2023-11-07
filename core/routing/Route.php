@@ -10,12 +10,27 @@ use core\http\Request;
 
 class Route {
 
-    private $_path, $_pathParts, $_class, $_request;
+    private $_path, $_pathParts, $_routeKeyValue, $_uriRouteKeyValue, $_class, $_request;
 
     public function __construct($path, $class) {
 
         $this->_request = new Request();
-        $this->checkPath($path, $class);
+        $this->checkType(key($path), $path[key($path)], $class);
+    }
+
+    /**
+     * Checking type 
+     * 
+     * @param string $type request method type
+     * @param string $path uri path name
+     * @param array $class class name, method name
+     */ 
+    private function checkType($type, $path, $class) {
+
+        if($type === $this->_request->getMethod() ) {
+
+            $this->checkPath($path, $class);
+        }
     }
 
     /**
@@ -26,12 +41,11 @@ class Route {
      */ 
     private function checkPath($path, $class) {
 
-        if($path[0] === $this->_request->getUri()) {
+        if($path === $this->_request->getUri()) {
 
-            $this->_path = $path[0];
+            $this->_path = $path;
             $this->checkClass($class);
         } else {
-
             $this->checkRouteKeys($path, $class);
         }
     }
@@ -45,11 +59,11 @@ class Route {
     private function checkRouteKeys($path, $class) {
 
         $regex = "/\[.*\]/";
-        preg_match($regex, $path[0], $match);
+        preg_match($regex, $path, $match);
 
         if(!empty($match) && $match !== null) {
 
-            $this->getRouteKeyKey($path[0], $match, $class);
+            $this->getRouteKeyKey($path, $match, $class);
         }
     }
 
@@ -87,12 +101,24 @@ class Route {
 
             if($routeKeyKey === $key) {
 
-                $this->_pathParts[$key] = $uriParts[$key];
+                $this->_uriRouteKeyValue = $uriParts[$key];
+                $this->setRouteKeyValue($this->_pathParts[$key]);
+                $this->_pathParts[$key] = $this->_uriRouteKeyValue;
                 $routePathUriKey = implode('/', $this->_pathParts);
 
-                return $this->checkPath([$routePathUriKey], $class);
+                return $this->checkPath($routePathUriKey, $class);
             }
         }
+    }
+
+    /**
+     * Setting route key value
+     * 
+     * @param string $routeKey route key path value
+     */ 
+    private function setRouteKeyValue($routeKey) {
+
+        $this->_routeKeyValue = trim($routeKey, '[]');
     }
 
     /**
@@ -134,9 +160,41 @@ class Route {
     
         if($this->_request->getMethod() === 'POST') {
 
-            return $instance->$method($this->_request->get());
-        }
+            return $this->typeOfPost($instance, $method);
+        } else if($this->_request->getMethod() === 'GET') {
+            return $this->typeOfGet($instance, $method);
+        } 
+    }
 
-        $instance->$method();
+    /**
+     * Running instance method type request of get
+     * 
+     * @param object $instance class instance
+     * @param string $method method name
+     */
+    private function typeOfGet($instance, $method) {
+
+        if(!empty($this->_uriRouteKeyValue) && $this->_uriRouteKeyValue !== null) {
+
+            return $instance->$method([$this->_routeKeyValue => $this->_uriRouteKeyValue]);
+        } 
+
+        return $instance->$method();
+    }
+
+    /**
+     * Running instance method type request of post
+     * 
+     * @param object $instance class instance
+     * @param string $method method name
+     */
+    private function typeOfPost($instance, $method) {
+
+        if(!empty($this->_uriRouteKeyValue) && $this->_uriRouteKeyValue !== null) {
+
+            return $instance->$method(array_merge($this->_request->get(), [$this->_routeKeyValue => $this->_uriRouteKeyValue]));
+        } 
+
+        return $instance->$method($this->_request->get());
     }
 }

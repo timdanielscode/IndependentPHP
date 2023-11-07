@@ -16,10 +16,16 @@
     <body>
         <a href="https://indy-php.com/" target="_blank"><img src="/assets/img/indyPHP-logo.png"></a>
 
-        <form action="/test" method="POST">
+        <form action="/test/5" method="POST">
 
             <input type="text" name="test"/>
             <input name="submit" type="submit" value="submit"/>
+        </form>
+
+        <form action="/test" method="POST">
+
+        <input type="text" name="test"/>
+        <input name="submit" type="submit" value="submit"/>
         </form>
 
         <table>

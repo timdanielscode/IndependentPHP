@@ -13,7 +13,17 @@ class HomeController extends Controller {
         return $this->view("home/index", $data);
     }
 
+    public function test($reqeust) {
+
+        print_r($reqeust);
+    }
+
     public function data($request) {
+
+        print_r($request);
+    }
+
+    public function data2($request) {
 
         print_r($request);
     }
