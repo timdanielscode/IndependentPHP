@@ -21,5 +21,14 @@
             <input type="text" name="test"/>
             <input name="submit" type="submit" value="submit"/>
         </form>
+
+        <table>
+            <?php foreach($ids as $id) { ?>
+            <tr>
+                <td><a href="/test/<?php echo $id; ?>"><?php echo $id; ?></a></td>
+            </tr>
+            <?php } ?>
+        </table>
+
     </body>
 </html> 

@@ -8,9 +8,9 @@ class HomeController extends Controller {
 
     public function index() {
 
-        echo 'index method vanuit controller';
+        $data['ids'] = [1,2,3,4,5];
 
-        return $this->view("home/index");
+        return $this->view("home/index", $data);
     }
 
     public function data($request) {
