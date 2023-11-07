@@ -9,8 +9,5 @@ require_once '../core/Autoload.php';
 require_once '../functions/functions.php';
 require_once '../config/config.php';
 
-use core\App;
-
-$app = new App(new core\http\Middleware);
-
+$app = new core\App();
 $app->run();

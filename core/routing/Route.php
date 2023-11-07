@@ -7,15 +7,19 @@
 namespace core\routing;
 
 use core\http\Request;
+use core\http\Response;
 
 class Route {
 
-    private $_path, $_pathParts, $_routeKeyValue, $_uriRouteKeyValue, $_class, $_request;
+    public $_path, $_pathParts, $_routeKeyValue, $_uriRouteKeyValue, $_class, $_request, $_response;
 
     public function __construct($path, $class) {
 
         $this->_request = new Request();
+        $this->_response = new Response();
+
         $this->checkType(key($path), $path[key($path)], $class);
+        $this->_response->getPath($this->_path);
     }
 
     /**

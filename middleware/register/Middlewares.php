@@ -15,13 +15,13 @@ class Middlewares {
 
     public $middlewares = [
 
-        //"Alias"      =>      "Middleware without php extension",
+        "test"      =>      "TestMiddleware2",
     
     ];
 
     public $routeMiddlewares = [
 
-        //"Alias"     =>      "Middleware without php extension",
+        "test"     =>      "TestMiddleware",
 
     ];
 }

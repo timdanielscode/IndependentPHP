@@ -7,31 +7,21 @@
 
 namespace core;
 
-use core\http\Request;
+use core\http\Middleware;
 use core\http\Response;
-use core\routing\Route;
 
 class App {
+ 
+    public function __construct() {
 
-    private $route, $request, $response;
-
-    /**
-     * Declaring Request, Response and Route
-     * 
-     * @return void
-     */    
-    public function __construct($middleware) {
-
-        $this->request = new Request();
-        $this->response = new Response();
-        //$this->route = new Route($this->request, $this->response);
+        $middleware = new Middleware();
     }
-
-    /**
-     * @return void 
-     */    
+  
     public function run() {
 
         require_once '../routes/routes.php';
+
+        $response = new Response();
+        $response->check(404);
     }
 }

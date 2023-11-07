@@ -10,6 +10,39 @@ use app\controllers\Controller;
 
 class Response extends Controller {
 
+    private static $_path;
+
+    /**
+     * Getting route path 
+     * 
+     * @param string $path route path
+     */ 
+    public function getPath($path) {
+
+        self::$_path[] = $path;
+    }
+
+    /**
+     * Checking on empty route path values
+     * 
+     * @param int $type status code type
+     */ 
+    public function check($type) {
+
+        if($type === 404) {
+
+            foreach(self::$_path as $key => $value) {
+
+                if(!empty($value)) {
+    
+                    return;
+                }
+            }
+
+            return $this->view('404/404');
+        }
+    }
+
     /** 
      * Setting status codes
      * Mainly created to set status code in Route class
