@@ -132,8 +132,8 @@ class Route {
      */ 
     private function checkClass($class) {
 
-        if(file_exists('../app/controllers/' . key($class) . '.php') === true) {
-
+        if(class_exists('app\controllers\\' . key($class) ) === true) {
+          
             $this->_class = key($class);
             $this->checkMethod($class[key($class)]);
         }
