@@ -4,37 +4,18 @@
     <title>IndyPHP</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <style>
-        img {
+        h1 {
             position: absolute;
             margin: auto;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #003277;
+            display: block;
+            font-size: 50px;
         }
     </style>
     <body>
-        <a href="https://indy-php.com/" target="_blank"><img src="/assets/img/indyPHP-logo.png"></a>
-
-        <form action="/test/5" method="POST">
-
-            <input type="text" name="test"/>
-            <input name="submit" type="submit" value="submit"/>
-        </form>
-
-        <form action="/test" method="POST">
-
-        <input type="text" name="test"/>
-        <input name="submit" type="submit" value="submit"/>
-        </form>
-
-        <table>
-            <?php foreach($ids as $id) { ?>
-            <tr>
-                <td><a href="/test/<?php echo $id; ?>"><?php echo $id; ?></a></td>
-            </tr>
-            <?php } ?>
-        </table>
-
+        <h1>IndyPHP</h1>
     </body>
 </html> 
