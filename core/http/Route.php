@@ -4,7 +4,7 @@
  * 
  * @author Tim Daniëls
  */
-namespace core\routing;
+namespace core\http;
 
 use core\http\Request;
 use core\http\Response;
@@ -38,11 +38,11 @@ class Route {
     }
 
     /**
-     * Removing get paramters from request uri
+     * Checking get parameters
      * 
      * @param string $uri uri
      */ 
-    private function getParamters($uri) {
+    private function checkGetParameters($uri) {
 
         if(str_contains($uri, '?') === true) {
 
@@ -58,7 +58,7 @@ class Route {
      */ 
     private function checkPath($path, $class) {
 
-        if($path === $this->_request->getUri() || $path === $this->getParamters($this->_request->getUri())) {
+        if($path === $this->_request->getUri() || $path === $this->checkGetParameters($this->_request->getUri())) {
 
             $this->_path = $path;
             $this->checkClass($class);

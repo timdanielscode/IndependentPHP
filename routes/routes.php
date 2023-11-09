@@ -1,5 +1,5 @@
 <?php
 
-use core\routing\Route;
+use core\http\Route;
 
 new Route(['GET' => '/'], ['HomeController' => 'index']);
