@@ -38,13 +38,13 @@ class Route {
     }
 
     /**
-     * Removing get paramters from request uri type of get
+     * Removing get paramters from request uri
      * 
      * @param string $uri uri
      */ 
     private function getParamters($uri) {
 
-        if($this->_request->getMethod() === 'GET' && str_contains($uri, '?') === true) {
+        if(str_contains($uri, '?') === true) {
 
             return substr($uri, 0, strpos($uri, "?"));
         }
