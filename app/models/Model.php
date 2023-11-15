@@ -83,18 +83,34 @@ class Model {
    /**
     * Fetching row on condition
     *
-    * @param string $column name
-    * @param string $operator value
-    * @param string $value column
+    * @param array $conditionValues column name, column value
     * @return object DB
     */
-    public static function where($column, $operator, $value) {
+    public static function where($conditionValues) {
 
         self::checkModel(new Tables());
 
         if(!empty(self::$_table) && self::$_table !== null) {
 
-            return DB::try()->select('*')->from(self::$_table)->where($column, $operator, $value)->first();
+            return DB::try()->select('*')->from(self::$_table)->where(key($conditionValues), '=', $conditionValues[key($conditionValues)])->fetch();
+        }
+    }
+
+   /**
+    * Fetching row on condition but only given columns
+    *
+    * @param array $columns column names
+    * @param array $conditionValues column name, column value
+    * @return object DB
+    */
+    public static function whereColumns($columns, $conditionValues) {
+
+        self::checkModel(new Tables());
+
+        if(!empty(self::$_table) && self::$_table !== null) {
+
+            $columnsString = implode(',', $columns);
+            return DB::try()->select($columnsString)->from(self::$_table)->where(key($conditionValues), '=', $conditionValues[key($conditionValues)])->fetch();
         }
     }
 
