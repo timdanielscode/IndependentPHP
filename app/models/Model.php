@@ -12,28 +12,37 @@ use app\models\register\Tables;
 
 class Model {
 
-    private static $_table;
-
-   /**
-    * Setting table
-    *
-    * @param object $model model
-    */
-    public static function setTable($tables) {
-   
-        self::$_table = $tables->tables[self::checkModel(get_called_class())];
-    }
+    private static $_table, $_model;
 
    /**
     * Checking model
     *
     * @param object $model model
     */
-    public static function checkModel($model) {
+    private static function checkModel($tables) {
 
-        if (class_exists($model)) {
+        if (class_exists(get_called_class())) {
 
-            return substr($model, strrpos($model, '\\') + 1);
+            self::$_model = get_called_class();
+            self::checkRegisteredModel(substr(self::$_model, strrpos(self::$_model, '\\') + 1), $tables);
+        }
+    }
+
+   /**
+    * Checking registered models and tables
+    *
+    * @param string $name model name
+    * @param object $tables models/tables
+    */
+    private static function checkRegisteredModel($name, $tables) {
+
+        foreach($tables->tables as $key => $value) {
+
+            if($key === $name && !empty($tables->tables[$name])) {
+
+                self::$_table = $tables->tables[$name];
+                return;
+            }
         }
     }
 
@@ -45,7 +54,7 @@ class Model {
     */
     public static function get($id) {
 
-        self::setTable(new Tables());
+        self::checkModel(new Tables());
         return DB::try()->select('*')->from(self::$_table)->where('id', '=', $id)->first();
     }
 
@@ -59,7 +68,7 @@ class Model {
     */
     public static function where($column, $operator, $value) {
 
-        self::setTable(new Tables());
+        self::checkModel(new Tables());
         return DB::try()->select('*')->from(self::$_table)->where($column, $operator, $value)->first();
     }
 
@@ -71,7 +80,7 @@ class Model {
     */
     public static function insert($data) {
 
-        self::setTable(new Tables());
+        self::checkModel(new Tables());
         return DB::try()->insert(self::$_table, $data);
    }
 
@@ -86,7 +95,7 @@ class Model {
 
         foreach($where as $key => $value) {
 
-            self::setTable(new Tables());
+            self::checkModel(new Tables());
             return DB::try()->update(self::$_table)->set($data)->where($key, '=', $value)->run();
         }
     }
@@ -100,7 +109,7 @@ class Model {
     */
     public static function delete($column, $value) {
 
-        self::setTable(new Tables());
+        self::checkModel(new Tables());
         return DB::try()->delete(self::$_table)->where($column, '=', $value)->run();
     }
 }
