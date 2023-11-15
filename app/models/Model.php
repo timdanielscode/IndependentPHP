@@ -55,7 +55,29 @@ class Model {
     public static function get($id) {
 
         self::checkModel(new Tables());
-        return DB::try()->select('*')->from(self::$_table)->where('id', '=', $id)->first();
+
+        if(!empty(self::$_table) && self::$_table !== null) {
+
+            return DB::try()->select('*')->from(self::$_table)->where('id', '=', $id)->first();
+        }
+    }
+
+   /**
+    * Fetching row on id but only given columns
+    *
+    * @param array $columns column names
+    * @param string $id column value
+    * @return object DB
+    */
+    public static function getColumns($columns, $id) {
+
+        self::checkModel(new Tables());
+
+        if(!empty(self::$_table) && self::$_table !== null) {
+
+            $columnsString = implode(',', $columns);
+            return DB::try()->select($columnsString)->from(self::$_table)->where('id', '=', $id)->first();
+        }
     }
 
    /**
@@ -69,7 +91,11 @@ class Model {
     public static function where($column, $operator, $value) {
 
         self::checkModel(new Tables());
-        return DB::try()->select('*')->from(self::$_table)->where($column, $operator, $value)->first();
+
+        if(!empty(self::$_table) && self::$_table !== null) {
+
+            return DB::try()->select('*')->from(self::$_table)->where($column, $operator, $value)->first();
+        }
     }
 
    /**
@@ -81,7 +107,11 @@ class Model {
     public static function insert($data) {
 
         self::checkModel(new Tables());
-        return DB::try()->insert(self::$_table, $data);
+
+        if(!empty(self::$_table) && self::$_table !== null) {
+
+            return DB::try()->insert(self::$_table, $data);
+        }
    }
 
    /**
@@ -93,10 +123,14 @@ class Model {
     */
     public static function update($where, $data) {
 
-        foreach($where as $key => $value) {
+        self::checkModel(new Tables());
 
-            self::checkModel(new Tables());
-            return DB::try()->update(self::$_table)->set($data)->where($key, '=', $value)->run();
+        if(!empty(self::$_table) && self::$_table !== null) {
+
+            foreach($where as $key => $value) {
+
+                return DB::try()->update(self::$_table)->set($data)->where($key, '=', $value)->run();
+            }
         }
     }
 
@@ -110,6 +144,10 @@ class Model {
     public static function delete($column, $value) {
 
         self::checkModel(new Tables());
-        return DB::try()->delete(self::$_table)->where($column, '=', $value)->run();
+
+        if(!empty(self::$_table) && self::$_table !== null) {
+
+            return DB::try()->delete(self::$_table)->where($column, '=', $value)->run();
+        }
     }
 }
