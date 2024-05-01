@@ -1,9 +1,4 @@
 <?php
-/**
- * Application
- * 
- * @author Tim Daniëls
- */
 
 namespace core;
 
@@ -17,6 +12,9 @@ class App {
         $middleware = new Middleware();
     }
   
+    /** 
+     * To include the routes file to 'run the application'
+     */  
     public function run() {
 
         require_once '../routes/routes.php';

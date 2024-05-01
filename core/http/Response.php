@@ -1,9 +1,5 @@
 <?php
-/**
- * Response
- * 
- * @author Tim Daniëls
- */
+
 namespace core\http;
 
 use app\controllers\Controller;
@@ -13,7 +9,7 @@ class Response extends Controller {
     private static $_path;
 
     /**
-     * Getting route path 
+     * To set path of routes to check for a 404
      * 
      * @param string $path route path
      */ 
@@ -23,7 +19,7 @@ class Response extends Controller {
     }
 
     /**
-     * Checking on empty route path values
+     * To show a 404 view and return a 404 http status code
      * 
      * @param int $type status code type
      */ 
@@ -39,13 +35,12 @@ class Response extends Controller {
                 }
             }
 
-            return $this->view('404/404');
+            return self::statusCode(404)->view('404/404')->data();
         }
     }
 
     /** 
-     * Setting status codes
-     * Mainly created to set status code in Route class
+     * To set http response status codes
      * 
      * @param mixed int|string $code
      * @return int status code 
@@ -56,8 +51,7 @@ class Response extends Controller {
     }
 
     /** 
-     * Setting status code
-     * Created so views can be chained in Controller
+     * To return a http response status code
      * 
      * @param mixed int|string $code
      * @return object Response
@@ -65,8 +59,7 @@ class Response extends Controller {
     public static function statusCode($code) {
 
         http_response_code($code);
-        $inst = new Response();
 
-        return $inst;
+        return new Response();
     }
 }

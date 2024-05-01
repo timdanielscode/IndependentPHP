@@ -1,8 +1,6 @@
 <?php 
 /**
  * Run application
- * 
- * @author Tim Daniëls
  */
 
 require_once '../core/Autoload.php';

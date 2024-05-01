@@ -1,9 +1,4 @@
 <?php
-/**
- * Middleware
- * 
- * @author Tim Daniëls
- */
 
 namespace core\http;
 
@@ -25,9 +20,9 @@ class Middleware {
     }
 
     /**
-     * Creating instances of route based middlewares
+     * To run route based middleware to restrict routes
      * 
-     * @param mixed $middlewareAlias alias middleware | alias middleware and extra value
+     * @param mixed $middlewareAlias string alias middleware | array alias middleware and extra value
      * @param object $func Closure Object
      * @return object middleware instances
      */
@@ -64,10 +59,8 @@ class Middleware {
     }
 
     /**
-     * Creating instances of middlewares
-     * 
-     * @return void 
-     */    
+     * To run 'non route' middleware to perform certain checks before running routes
+     */
     public function run() {
 
         $middlewares = $this->_middlewares;

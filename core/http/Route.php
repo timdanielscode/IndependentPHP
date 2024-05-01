@@ -1,9 +1,5 @@
 <?php 
-/**
- * Setting routes
- * 
- * @author Tim Daniëls
- */
+
 namespace core\http;
 
 use core\http\Request;
@@ -23,7 +19,7 @@ class Route {
     }
 
     /**
-     * Checking type 
+     * To check type of request method matches
      * 
      * @param string $type request method type
      * @param string $path uri path name
@@ -38,7 +34,7 @@ class Route {
     }
 
     /**
-     * Checking get parameters
+     * To remove get parameters from uri
      * 
      * @param string $uri uri
      */ 
@@ -51,7 +47,7 @@ class Route {
     }
 
     /**
-     * Checking request uri path
+     * To check if route path matches request uri
      * 
      * @param array $path uri path name
      * @param array $class class name, method name
@@ -68,7 +64,7 @@ class Route {
     }
 
     /**
-     * Checking route keys
+     * To check route path contains a route key
      * 
      * @param array $path uri path name
      * @param array $class class name, method name
@@ -85,7 +81,7 @@ class Route {
     }
 
     /**
-     * Getting route key key
+     * To get the route key key value
      * 
      * @param string $path uri path name
      * @param array $routeKey path uri key key
@@ -105,7 +101,7 @@ class Route {
     }
 
     /**
-     * Replace route key key with uri key
+     * To replace the route key value with the value on the same string position/key position as the route key from request uri
      * 
      * @param string $routeKeyKey uri path key key
      * @param array $class class name, method name
@@ -129,7 +125,7 @@ class Route {
     }
 
     /**
-     * Setting route key value
+     * To set the route key value
      * 
      * @param string $routeKey route key path value
      */ 
@@ -139,7 +135,7 @@ class Route {
     }
 
     /**
-     * Checking if class exists
+     * To check if the controller exists
      * 
      * @param array $class class name, method name
      */ 
@@ -153,7 +149,7 @@ class Route {
     }
 
     /**
-     * Checking method exists
+     * To check if the controller method exists
      * 
      * @param string $name method name
      */ 
@@ -166,7 +162,7 @@ class Route {
     }
 
     /**
-     * Create instance
+     * To run the controller method
      * 
      * @param string $class class name
      * @param string $method method name
@@ -175,43 +171,11 @@ class Route {
 
         $instance = new $class();
     
-        if($this->_request->getMethod() === 'POST') {
-
-            return $this->typeOfPost($instance, $method);
-        } else if($this->_request->getMethod() === 'GET') {
-            return $this->typeOfGet($instance, $method);
-        } 
-    }
-
-    /**
-     * Running instance method type request of get
-     * 
-     * @param object $instance class instance
-     * @param string $method method name
-     */
-    private function typeOfGet($instance, $method) {
-
         if(!empty($this->_uriRouteKeyValue) && $this->_uriRouteKeyValue !== null) {
 
-            return $instance->$method([$this->_routeKeyValue => $this->_uriRouteKeyValue]);
+            return $instance->$method(array_merge($this->_request->get(), [$this->_routeKeyValue => $this->_uriRouteKeyValue])) . exit();
         } 
 
-        return $instance->$method();
-    }
-
-    /**
-     * Running instance method type request of post
-     * 
-     * @param object $instance class instance
-     * @param string $method method name
-     */
-    private function typeOfPost($instance, $method) {
-
-        if(!empty($this->_uriRouteKeyValue) && $this->_uriRouteKeyValue !== null) {
-
-            return $instance->$method(array_merge($this->_request->get(), [$this->_routeKeyValue => $this->_uriRouteKeyValue]));
-        } 
-
-        return $instance->$method($this->_request->get());
+        return $instance->$method($this->_request->get()) . exit();
     }
 }

@@ -1,57 +1,56 @@
 <?php
-/**
- * Controller
- * 
- * @author Tim Daniëls
- */
 
 namespace app\controllers;
 
-use core\Session;
-
 class Controller {
 
+    private $_path;
+
     /**
-     * Require views
+     * To set the view path
      * 
      * @param string $path name view
-     * @param array $args optional view variables
-     * @return mixed object Controller
+     * @return object Controller
      */
-    public function view($path, $args = []) {
-    
-        if($path) {
+    public function view($path) {
 
-            if(!empty($args)) {
-                extract($args);
-            }
-            
-            if($path !== '/404/404') {
-                Session::set('view', $path);
-            }
+        if(!empty($path) && $path !== null) {
 
-            include("../app/views/" . $path . ".php");
-            
+            $this->_path = $path;
         } 
+
         return $this;
+    }    
+
+    /**
+     * To extract data on view and include the view on setted path
+     * 
+     * @param array $args optional view variables
+     */
+    public function data($args = null) {
+
+        if(!empty($args) && $args !== null) {
+
+            extract($args);
+        }
+
+        include("../app/views/" . $this->_path . ".php");
     }
 
     /**
-     * Require view from includes folder
+     * To include views from within the includes folder
      * 
      * @param string $file name view
-     * @return void
      */
     public function include($file) {
 
-        involve("../app/views/includes/" . $file . ".php");
+        require "../app/views/includes/" . $file . ".php";
     }
 
     /**
-     * Adding html title tag in view
+     * To include a meta title on view
      * 
      * @param string $title meta
-     * @return void
      */
     public function title($title) {
 
@@ -59,10 +58,9 @@ class Controller {
     }
 
     /**
-     * Adding html meta tag in view
+     * To include a meta description on a view
      * 
      * @param string $content meta 
-     * @return void
      */
     public function description($content) {
 
@@ -70,11 +68,10 @@ class Controller {
     }
 
     /**
-     * Adding html meta tag in view
+     * To include a meta tag on a view
      * 
      * @param string $name meta
      * @param string $content meta
-     * @return void
      */
     public function meta($name, $content) {
 
@@ -82,28 +79,29 @@ class Controller {
     } 
 
     /**
-     * Adding html script tag in view
+     * To include a js script on a view
      * 
      * @param string $src source
      * @param string $defer optional
-     * @return void
      */
-    public function script($src, $defer = false) {
+    public function script($src, $defer = null) {
 
-        echo '<script '.$defer.' src='.'"'.$src.'"'.'></script>';
+        if($defer === true) {
+
+            echo '<script type="text/javascript" src='.'"'.$src.'"'.' defer></script>';
+        } else {
+
+            echo '<script type="text/javascript" src='.'"'.$src.'"'.'></script>';
+        }
     }
 
     /**
-     * Adding html link tag in view
+     * To link a css file on a view
      * 
      * @param string $href hypertext reference
-     * @return void
      */
     public function stylesheet($href) {
 
         echo '<link rel='.'"'.'stylesheet'.'" '. 'type='.'"'.'text/css'.'" '. 'href='.'"'.$href.'"'.'>';
     }
-
-
-
 }

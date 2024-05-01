@@ -1,9 +1,4 @@
 <?php
-/**
- * Model
- * 
- * @author Tim Daniëls
- */
 
 namespace app\models;
 
@@ -15,9 +10,9 @@ class Model {
     private static $_table, $_model;
 
    /**
-    * Checking model
+    * To check model class exists
     *
-    * @param object $model model
+    * @param object $tables Tables
     */
     private static function checkModel($tables) {
 
@@ -29,10 +24,10 @@ class Model {
     }
 
    /**
-    * Checking registered models and tables
+    * To check model name matches the model key name to set the table value
     *
     * @param string $name model name
-    * @param object $tables models/tables
+    * @param object $tables Tables
     */
     private static function checkRegisteredModel($name, $tables) {
 
@@ -47,7 +42,7 @@ class Model {
     }
 
    /**
-    * Fetching row on id
+    * To fetch a row on id to fetch data from table
     *
     * @param int $id column value
     * @return object DB
@@ -63,7 +58,7 @@ class Model {
     }
 
    /**
-    * Fetching row on id but only given columns
+    * To fetch a row on id but only given columns to fetch data from table
     *
     * @param array $columns column names
     * @param string $id column value
@@ -81,7 +76,7 @@ class Model {
     }
 
    /**
-    * Fetching row on condition
+    * To fetch a row on condition to fetch data from table
     *
     * @param array $conditionValues column name, column value
     * @return object DB
@@ -97,7 +92,7 @@ class Model {
     }
 
    /**
-    * Fetching row on condition but only given columns
+    * To fetch a row on condition but only given columns to fetch data from table
     *
     * @param array $columns column names
     * @param array $conditionValues column name, column value
@@ -115,7 +110,7 @@ class Model {
     }
 
    /**
-    * Inserting rows
+    * To insert rows to store data in table
     *
     * @param array column names and values
     * @return object DB
@@ -131,7 +126,7 @@ class Model {
    }
 
    /**
-    * Updating rows
+    * to update rows update data in table 
     *
     * @param array $where column name, column value
     * @param array $data column names, column values
@@ -151,7 +146,7 @@ class Model {
     }
 
    /**
-    * Deleting rows
+    * To delete rows to remove data from table
     *
     * @param string $column name
     * @param string $value column

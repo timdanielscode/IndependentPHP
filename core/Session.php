@@ -1,15 +1,11 @@
 <?php
-/**
- * Session
- * 
- * @author Tim Daniëls
- */
+
 namespace core;
 
 class Session {
 
     /**
-     * For checking if session exists by name 
+     * To check if session exists
      * 
      * @param string $name session
      * @return bool
@@ -25,14 +21,14 @@ class Session {
     }
 
     /**
-     * For setting session  
+     * To set a session  
      * 
      * @param string $name session
      * @param string $value session
-     * @return global _SESSION name
+     * @return string session value
      */    
     public static function set($name, $value) {
-        
+  
         return $_SESSION[$name] = $value;
     }
 
@@ -40,7 +36,7 @@ class Session {
      * To get the session value
      * 
      * @param string $name session
-     * @return global _SESSION name
+     * @return string session name
      */     
     public static function get($name) {
 
@@ -48,10 +44,9 @@ class Session {
     }    
 
     /**
-     * Unsets session by name 
+     * To unset a session 
      * 
      * @param string $name session
-     * @return void
      */     
     public static function delete($name) {
         
