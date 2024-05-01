@@ -1,20 +1,9 @@
-![alt text](http://indy-php.com/assets/img/indyphp.png)
+![alt text](https://independentphp.com//website/assets/logo/logo.png)
 
-PHP framework without dependencies, faster development applying just the essentials.<br>
-No external packages or libraries are included. 
-
-
-### Components
-
- - Custom routing
- - Mvc pattern
- - View templating
- - Csrf tokens
- - Querybuilder
- - Middlewares
- - Validation
- - Auth
+A micro dependency free PHP framework<br>
+To built web apps without relying on external PHP dependencies.
 
 ### Documentation 
 
-[https://indy-php.com](https://indy-php.com/)
+[https://independentphp.com/](https://independentphp.com/)
+
