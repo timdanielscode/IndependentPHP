@@ -116,6 +116,15 @@ class Validate {
                             $this->message($this->_name, "$this->_alias can not contain any special characters");  
                         }
                     break;
+                    case 'text':
+
+                        $regex = '/^[a-zA-Z .,]+$/';
+
+                        if(!preg_match($regex, $this->_value)) {
+
+                            $this->message($this->_name, "$this->_alias can only contain characters which will be used in a regular sentence");  
+                        }
+                    break;
                     case 'min-one-admin':
                         
                         if(count($value) < 2) {
