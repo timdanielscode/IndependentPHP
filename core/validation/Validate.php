@@ -116,6 +116,15 @@ class Validate {
                             $this->message($this->_name, "$this->_alias can not contain any special characters");  
                         }
                     break;
+                    case 'numeric':
+
+                        $regex = '/^[0-9]+$/';
+
+                        if(!preg_match($regex, $this->_value)) {
+
+                            $this->message($this->_name, "$this->_alias can only contain numbers.");  
+                        }
+                    break;
                     case 'text':
 
                         $regex = '/^[a-zA-Z .,]+$/';
