@@ -102,7 +102,7 @@ class Validate {
 
                         $regex = '/^[a-zA-Z0-9@!#$^*()_+{}:;,.?]+$/';
 
-                        if(!preg_match($regex, $this->_value)) {
+                        if($value !== true || !preg_match($regex, $this->_value)) {
 
                             $this->message($this->_name, "$this->_alias can only contain the following special characters: @!#$^*()_+{}:;,.?");  
                         }
@@ -111,16 +111,16 @@ class Validate {
 
                         $regex = '/^[a-zA-Z0-9 ]+$/';
 
-                        if(!preg_match($regex, $this->_value)) {
+                        if($value !== true || !preg_match($regex, $this->_value)) {
 
-                            $this->message($this->_name, "$this->_alias can not contain any special characters");  
+                            $this->message($this->_name, "$this->_alias can not contain any special characters.");  
                         }
                     break;
                     case 'numeric':
 
                         $regex = '/^[0-9]+$/';
 
-                        if(!preg_match($regex, $this->_value)) {
+                        if($value !== true || !preg_match($regex, $this->_value)) {
 
                             $this->message($this->_name, "$this->_alias can only contain numbers.");  
                         }
@@ -129,16 +129,18 @@ class Validate {
 
                         $regex = '/^[a-zA-Z .,]+$/';
 
-                        if(!preg_match($regex, $this->_value)) {
+                        if($value !== true || !preg_match($regex, $this->_value)) {
 
-                            $this->message($this->_name, "$this->_alias can only contain characters which will be used in a regular sentence");  
+                            $this->message($this->_name, "$this->_alias can only contain characters which will be used in a regular sentence.");  
                         }
                     break;
-                    case 'min-one-admin':
-                        
-                        if(count($value) < 2) {
+                    case 'date':
 
-                            $this->message($this->_name,"There should be at least one admin.");
+                        $regex = '/^\d\d\d\d-\d\d-\d\d$/';
+
+                        if($value !== true || $this->_value < date('Y-m-d') || !preg_match($regex, $this->_value)) {
+
+                            $this->message($this->_name, "$this->_alias should contain a date higher than the date of today and must be a date.");  
                         }
                     break;
                 }
